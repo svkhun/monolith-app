@@ -58,6 +58,7 @@ const I18N = {
     work_title: "WORK MANAGEMENT",
     work_subtitle: "RECTILINEAR KANBAN & SPRINT TASK ENGINE",
     work_btn_new: "+ CREATE TASK",
+    work_add_item: "+ ADD ITEM",
     work_metric_total: "TOTAL",
     work_metric_active: "ACTIVE",
     work_metric_today: "DUE TODAY",
@@ -81,7 +82,7 @@ const I18N = {
     card_due: "DUE:",
     card_no_due: "NO DEADLINE",
     card_edit: "EDIT",
-    card_del: "DEL",
+    card_del: "DELETE",
     study_title: "UNIVERSITY EXAM HUB",
     study_subtitle: "COUNTDOWNS, SYLLABUS CHECKLISTS & POMODORO TIMER",
     study_btn_new: "+ ADD SUBJECT",
@@ -145,6 +146,9 @@ const I18N = {
     modal_login_btn: "SIGN IN",
     modal_login_demo: "QUICK DEMO OPERATOR ACCESS",
     modal_login_close: "CANCEL",
+    confirm_delete_title: "CONFIRM DELETION",
+    confirm_delete_msg: "Are you sure you want to permanently delete this item? This action cannot be undone.",
+    confirm_delete_btn: "DELETE PERMANENTLY",
   },
   th: {
     brand_sub: "ระบบจัดการงานและเตรียมสอบ",
@@ -195,6 +199,7 @@ const I18N = {
     work_title: "ระบบจัดการงาน",
     work_subtitle: "กระดานคานบันและการบริหารงานส่งตามลำดับความสำคัญ",
     work_btn_new: "+ สร้างงานใหม่",
+    work_add_item: "+ เพิ่มรายการ",
     work_metric_total: "ทั้งหมด",
     work_metric_active: "กำลังทำ",
     work_metric_today: "ส่งวันนี้",
@@ -282,6 +287,9 @@ const I18N = {
     modal_login_btn: "เข้าสู่ระบบ",
     modal_login_demo: "เข้าใช้งานด้วยบัญชีทดลองทันที",
     modal_login_close: "ยกเลิก",
+    confirm_delete_title: "ยืนยันการลบรายการ",
+    confirm_delete_msg: "คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้อย่างถาวร? ข้อมูลจะถูกลบและไม่สามารถกู้คืนได้",
+    confirm_delete_btn: "ยืนยันการลบ",
   }
 };
 
@@ -289,6 +297,11 @@ let currentLang = localStorage.getItem("monolith_lang") || "en";
 
 function t(key) {
   return I18N[currentLang]?.[key] || I18N["en"]?.[key] || key;
+}
+
+// Trash Icon SVG Generator (Clean, Sharp Rectilinear Vector)
+function trashIcon(size = 13) {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px;"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>`;
 }
 
 function updateDOMTranslations() {
@@ -311,7 +324,6 @@ function updateDOMTranslations() {
     langToggleBtn.textContent = currentLang === "en" ? "[ EN | TH ]" : "[ TH | EN ]";
   }
 
-  // Update theme button text
   const themeToggleBtn = document.getElementById("theme-toggle-btn");
   if (themeToggleBtn) {
     themeToggleBtn.textContent = currentTheme === "dark" ? t("nav_theme_light") : t("nav_theme_dark");
@@ -416,7 +428,43 @@ function handleLogout() {
 }
 
 // ==========================================================================
-// 4. SYNTHETIC ACOUSTIC ENGINE (Web Audio API Chime)
+// 4. CONFIRMATION MODAL ENGINE (Prompt Before Deletion)
+// ==========================================================================
+let pendingConfirmAction = null;
+
+function showConfirmDialog({ title, message, onConfirm }) {
+  const modal = document.getElementById("confirm-modal");
+  if (!modal) {
+    if (confirm(message || t("confirm_delete_msg"))) {
+      if (onConfirm) onConfirm();
+    }
+    return;
+  }
+
+  document.getElementById("confirm-modal-title").textContent = title || t("confirm_delete_title");
+  document.getElementById("confirm-modal-msg").textContent = message || t("confirm_delete_msg");
+  document.getElementById("confirm-modal-cancel-btn").textContent = t("modal_task_cancel");
+  document.getElementById("confirm-modal-action-text").textContent = t("confirm_delete_btn");
+
+  pendingConfirmAction = onConfirm;
+  modal.classList.add("open");
+}
+
+function closeConfirmModal() {
+  const modal = document.getElementById("confirm-modal");
+  if (modal) modal.classList.remove("open");
+  pendingConfirmAction = null;
+}
+
+function executePendingConfirmAction() {
+  if (pendingConfirmAction) {
+    pendingConfirmAction();
+  }
+  closeConfirmModal();
+}
+
+// ==========================================================================
+// 5. SYNTHETIC ACOUSTIC ENGINE (Web Audio API Chime)
 // ==========================================================================
 class SoundEngine {
   static playChime() {
@@ -447,7 +495,7 @@ class SoundEngine {
 }
 
 // ==========================================================================
-// 5. ROUTER ENGINE (0ms Instant View Switching & Top Progress Bar)
+// 6. ROUTER ENGINE (0ms Instant View Switching & Top Progress Bar)
 // ==========================================================================
 class Router {
   static init() {
@@ -510,7 +558,7 @@ class Router {
 }
 
 // ==========================================================================
-// 6. STARTUP LOADER SEQUENCE
+// 7. STARTUP LOADER SEQUENCE
 // ==========================================================================
 class BootLoader {
   static init() {
@@ -530,30 +578,24 @@ class BootLoader {
       if (statusText) statusText.textContent = msg;
     };
 
-    // Stage 1 (0ms): 15%
     setProgress(15, "CALIBRATING ARCHITECTURE...");
 
-    // Stage 2 (450ms): 45%
     const t1 = setTimeout(() => {
       setProgress(45, "LOADING RECTILINEAR ARCHITECTURE...");
     }, 450);
 
-    // Stage 3 (1050ms): 75%
     const t2 = setTimeout(() => {
       setProgress(75, "SYNCHRONIZING WORK & STUDY ENGINES...");
     }, 1050);
 
-    // Stage 4 (1650ms): 95%
     const t3 = setTimeout(() => {
       setProgress(95, "FINALIZING WORKSPACE ENVIRONMENT...");
     }, 1650);
 
-    // Stage 5 (2100ms): 100%
     const t4 = setTimeout(() => {
       setProgress(100, "SYSTEM READY // WELCOME OPERATOR");
     }, 2100);
 
-    // Stage 6 (2500ms): Fade out
     const t5 = setTimeout(() => {
       dismiss();
     }, 2500);
@@ -582,17 +624,18 @@ class BootLoader {
 }
 
 // ==========================================================================
-// 7. USER WORKSPACE STORE (Starts Completely CLEAN)
+// 8. USER WORKSPACE STORE (Clean by Default, Zero Prefix Collision!)
 // ==========================================================================
+const LEGACY_MOCK_TASK_IDS = ["task-1", "task-2", "task-3", "task-4"];
+
 class WorkStore {
   static getTasks() {
     try {
       const stored = localStorage.getItem("monolith_vanilla_tasks");
       if (stored) {
         const parsed = JSON.parse(stored);
-        const cleaned = parsed.filter(
-          (t) => !t.id.startsWith("task-1") && !t.id.startsWith("task-2") && !t.id.startsWith("task-3") && !t.id.startsWith("task-4")
-        );
+        // Clean out legacy mock tasks by EXACT ID ONLY (never startsWith!)
+        const cleaned = parsed.filter((t) => !LEGACY_MOCK_TASK_IDS.includes(t.id));
         if (cleaned.length !== parsed.length) {
           WorkStore.saveTasks(cleaned);
         }
@@ -616,7 +659,7 @@ class WorkStore {
     const tasks = WorkStore.getTasks();
     const newTask = {
       ...task,
-      id: "task-" + Date.now(),
+      id: "u_task_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7),
       createdAt: new Date().toISOString(),
     };
     tasks.unshift(newTask);
@@ -635,7 +678,6 @@ class WorkStore {
   }
 }
 
-// Work Filter States
 let currentTaskFilter = {
   search: "",
   priority: "ALL",
@@ -645,7 +687,6 @@ let currentTaskFilter = {
 function renderWorkView() {
   const tasks = WorkStore.getTasks();
 
-  // 1. Calculate Metrics
   const total = tasks.length;
   const active = tasks.filter((t) => t.status === "IN_PROGRESS").length;
   const todayStr = new Date().toISOString().split("T")[0];
@@ -661,7 +702,7 @@ function renderWorkView() {
   const kanbanBoard = document.getElementById("work-kanban-board");
   const listContainer = document.getElementById("work-list-container");
 
-  // Handle Clean Empty State
+  // If user has 0 tasks, display clean empty state with quick action buttons
   if (tasks.length === 0) {
     if (emptyContainer) {
       emptyContainer.style.display = "block";
@@ -686,7 +727,6 @@ function renderWorkView() {
 
   if (emptyContainer) emptyContainer.style.display = "none";
 
-  // Filter Tasks
   const filtered = tasks.filter((t) => {
     const matchSearch =
       !currentTaskFilter.search ||
@@ -702,7 +742,7 @@ function renderWorkView() {
     listContainer.style.display = "none";
 
     const columns = ["TODO", "IN_PROGRESS", "REVIEW", "DONE"];
-    columns.forEach((col, idx) => {
+    columns.forEach((col) => {
       const colCardsContainer = document.getElementById(`kanban-cards-${col}`);
       const colCount = document.getElementById(`kanban-count-${col}`);
       const colTasks = filtered.filter((t) => t.status === col);
@@ -729,7 +769,7 @@ function createTaskCardElement(task, isDemo = false) {
   card.setAttribute("data-id", task.id);
 
   const isOverdue = task.dueDate && task.dueDate < new Date().toISOString().split("T")[0] && task.status !== "DONE";
-  const deleteHandler = isDemo ? `handleDemoDeleteTask('${task.id}')` : `handleDeleteTask('${task.id}')`;
+  const deleteHandler = isDemo ? `confirmDeleteDemoTask('${task.id}')` : `confirmDeleteTask('${task.id}')`;
   const editHandler = isDemo ? `openEditDemoTaskModal('${task.id}')` : `openEditTaskModal('${task.id}')`;
   const statusChangeHandler = isDemo ? `handleDemoTaskStatusChange('${task.id}', this.value)` : `handleTaskStatusChange('${task.id}', this.value)`;
 
@@ -738,7 +778,9 @@ function createTaskCardElement(task, isDemo = false) {
       <span class="badge badge-${task.priority.toLowerCase()}">${t("work_filter_" + task.priority.toLowerCase())}</span>
       <div style="display: flex; gap: 0.25rem;">
         <button class="card-del-btn" onclick="${editHandler}" title="${t("card_edit")}">[${t("card_edit")}]</button>
-        <button class="card-del-btn" onclick="${deleteHandler}" title="${t("card_del")}" style="color: var(--accent-rust);">[${t("card_del")}]</button>
+        <button class="card-del-btn" onclick="${deleteHandler}" title="${t("card_del")}" style="color: var(--accent-rust);">
+          ${trashIcon(13)}
+        </button>
       </div>
     </div>
     <h4 style="font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700; color: var(--text); line-height: 1.35;">${escapeHtml(task.title)}</h4>
@@ -797,7 +839,7 @@ function renderTaskListView(tasks, isDemo = false) {
 
   tasks.forEach((tTask) => {
     const editHandler = isDemo ? `openEditDemoTaskModal('${tTask.id}')` : `openEditTaskModal('${tTask.id}')`;
-    const deleteHandler = isDemo ? `handleDemoDeleteTask('${tTask.id}')` : `handleDeleteTask('${tTask.id}')`;
+    const deleteHandler = isDemo ? `confirmDeleteDemoTask('${tTask.id}')` : `confirmDeleteTask('${tTask.id}')`;
     const statusHandler = isDemo ? `handleDemoTaskStatusChange('${tTask.id}', this.value)` : `handleTaskStatusChange('${tTask.id}', this.value)`;
 
     html += `
@@ -821,7 +863,9 @@ function renderTaskListView(tasks, isDemo = false) {
         </td>
         <td style="padding: 0.75rem 1rem; text-align: right;">
           <button class="btn btn-outline btn-sm" onclick="${editHandler}">${t("card_edit")}</button>
-          <button class="btn btn-danger btn-sm" onclick="${deleteHandler}">${t("card_del")}</button>
+          <button class="btn btn-danger btn-sm" onclick="${deleteHandler}" style="margin-left: 0.25rem;">
+            ${trashIcon(12)}
+          </button>
         </td>
       </tr>
     `;
@@ -836,26 +880,31 @@ function handleTaskStatusChange(id, newStatus) {
   renderWorkView();
 }
 
-function handleDeleteTask(id) {
-  if (confirm(currentLang === "th" ? "ยืนยันการลบงานนี้อย่างถาวร?" : "Confirm permanent deletion of this task?")) {
-    WorkStore.deleteTask(id);
-    closeTaskModal();
-    renderWorkView();
-  }
+function confirmDeleteTask(id) {
+  showConfirmDialog({
+    title: t("confirm_delete_title"),
+    message: currentLang === "th" ? "ยืนยันการลบงานนี้อย่างถาวร?" : "Confirm permanent deletion of this task?",
+    onConfirm: () => {
+      WorkStore.deleteTask(id);
+      closeTaskModal();
+      renderWorkView();
+    }
+  });
 }
 
 // ==========================================================================
-// 8. USER STUDY HUB STORE (Starts Completely CLEAN)
+// 9. USER STUDY HUB STORE (Clean by Default, Zero Prefix Collision!)
 // ==========================================================================
+const LEGACY_MOCK_SUB_IDS = ["sub-1", "sub-2"];
+
 class StudyStore {
   static getSubjects() {
     try {
       const stored = localStorage.getItem("monolith_vanilla_subjects");
       if (stored) {
         const parsed = JSON.parse(stored);
-        const cleaned = parsed.filter(
-          (s) => !s.id.startsWith("sub-1") && !s.id.startsWith("sub-2")
-        );
+        // Clean out legacy mock subjects by EXACT ID ONLY (never startsWith!)
+        const cleaned = parsed.filter((s) => !LEGACY_MOCK_SUB_IDS.includes(s.id));
         if (cleaned.length !== parsed.length) {
           StudyStore.saveSubjects(cleaned);
         }
@@ -879,7 +928,7 @@ class StudyStore {
     const subjects = StudyStore.getSubjects();
     const newSub = {
       ...sub,
-      id: "sub-" + Date.now(),
+      id: "u_sub_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7),
       chapters: [],
       notes: [],
     };
@@ -909,7 +958,7 @@ class StudyStore {
       if (sub.id !== subjectId) return sub;
       const chapters = [
         ...sub.chapters,
-        { id: "ch-" + Date.now(), title: chapterTitle, isCompleted: false }
+        { id: "ch_" + Date.now() + "_" + Math.random().toString(36).substring(2, 5), title: chapterTitle, isCompleted: false }
       ];
       return { ...sub, chapters };
     });
@@ -929,7 +978,7 @@ class StudyStore {
     const subjects = StudyStore.getSubjects().map((sub) => {
       if (sub.id !== subjectId) return sub;
       const notes = [
-        { id: "note-" + Date.now(), text: noteText, isPinned: false },
+        { id: "note_" + Date.now() + "_" + Math.random().toString(36).substring(2, 5), text: noteText, isPinned: false },
         ...(sub.notes || [])
       ];
       return { ...sub, notes };
@@ -1022,7 +1071,9 @@ function renderStudyView() {
           </div>
           <div style="display: flex; align-items: center; gap: 0.35rem;">
             <span class="badge badge-${sub.priority.toLowerCase()}">${t("work_filter_" + sub.priority.toLowerCase())}</span>
-            <button class="card-del-btn" onclick="handleDeleteSubject('${sub.id}')" title="${t("study_del_subject")}">[DEL]</button>
+            <button class="card-del-btn" onclick="confirmDeleteSubject('${sub.id}')" title="${t("study_del_subject")}">
+              ${trashIcon(14)}
+            </button>
           </div>
         </div>
         <div onclick="activeSubjectId = '${sub.id}'; renderStudyView();">
@@ -1046,7 +1097,7 @@ function renderStudyView() {
     });
   }
 
-  // 2. Render Active Subject Syllabus Tracker
+  // 2. Render Active Subject Syllabus Tracker (With Chapter Delete Trash Icon!)
   const activeSub = subjects.find((s) => s.id === activeSubjectId) || subjects[0];
   const syllabusContainer = document.getElementById("study-syllabus-container");
   if (syllabusContainer && activeSub) {
@@ -1063,7 +1114,9 @@ function renderStudyView() {
           </div>
           <div style="display: flex; align-items: center; gap: 0.75rem;">
             <span class="font-mono text-accent" style="font-size: 1.25rem; font-weight: 900;">${pct}%</span>
-            <button class="btn btn-danger btn-sm" onclick="handleDeleteSubject('${activeSub.id}')">${t("study_del_subject")}</button>
+            <button class="btn btn-danger btn-sm" onclick="confirmDeleteSubject('${activeSub.id}')" style="display: inline-flex; align-items: center; gap: 0.35rem;">
+              ${trashIcon(12)} <span>${t("study_del_subject")}</span>
+            </button>
           </div>
         </div>
 
@@ -1081,7 +1134,9 @@ function renderStudyView() {
             <input type="checkbox" ${ch.isCompleted ? "checked" : ""} onchange="handleToggleChapter('${activeSub.id}', '${ch.id}')" style="cursor: pointer;" />
             <span style="flex: 1; font-weight: 500; font-size: 0.85rem;" onclick="handleToggleChapter('${activeSub.id}', '${ch.id}')">${escapeHtml(ch.title)}</span>
             <span class="font-mono text-muted" style="font-size: 0.7rem; margin-right: 0.5rem;">${ch.isCompleted ? t("status_done") : "PENDING"}</span>
-            <button class="card-del-btn" onclick="handleDeleteChapter('${activeSub.id}', '${ch.id}')" title="Delete chapter">[DEL]</button>
+            <button class="card-del-btn" onclick="confirmDeleteChapter('${activeSub.id}', '${ch.id}')" title="Delete topic">
+              ${trashIcon(13)}
+            </button>
           </div>
         `;
       });
@@ -1106,12 +1161,16 @@ function renderStudyView() {
   renderNotesBoard(activeSub);
 }
 
-function handleDeleteSubject(subjectId) {
-  if (confirm(currentLang === "th" ? "ยืนยันการลบวิชาสอบนี้และข้อมูลเนื้อหาทั้งหมด?" : "Confirm deletion of this exam subject and all its topics?")) {
-    StudyStore.deleteSubject(subjectId);
-    activeSubjectId = null;
-    renderStudyView();
-  }
+function confirmDeleteSubject(subjectId) {
+  showConfirmDialog({
+    title: t("confirm_delete_title"),
+    message: currentLang === "th" ? "ยืนยันการลบวิชาสอบนี้และหัวข้อทั้งหมด?" : "Confirm permanent deletion of this subject and all its syllabus topics?",
+    onConfirm: () => {
+      StudyStore.deleteSubject(subjectId);
+      activeSubjectId = null;
+      renderStudyView();
+    }
+  });
 }
 
 function handleToggleChapter(subjectId, chapterId) {
@@ -1119,9 +1178,15 @@ function handleToggleChapter(subjectId, chapterId) {
   renderStudyView();
 }
 
-function handleDeleteChapter(subjectId, chapterId) {
-  StudyStore.deleteChapter(subjectId, chapterId);
-  renderStudyView();
+function confirmDeleteChapter(subjectId, chapterId) {
+  showConfirmDialog({
+    title: t("confirm_delete_title"),
+    message: currentLang === "th" ? "ยืนยันการลบหัวข้อบทเรียนนี้ออกจากเช็คลิสต์?" : "Confirm deletion of this syllabus topic?",
+    onConfirm: () => {
+      StudyStore.deleteChapter(subjectId, chapterId);
+      renderStudyView();
+    }
+  });
 }
 
 function handleAddChapter(e, subjectId) {
@@ -1163,8 +1228,8 @@ function renderNotesBoard(activeSub) {
             <button class="btn btn-ghost btn-sm" onclick="StudyStore.toggleNotePin('${activeSub.id}', '${n.id}'); renderStudyView();" style="padding: 2px 6px;">
               ${n.isPinned ? "★" : "☆"}
             </button>
-            <button class="card-del-btn" onclick="StudyStore.deleteNote('${activeSub.id}', '${n.id}'); renderStudyView();" style="color: var(--accent-rust);">
-              [DEL]
+            <button class="card-del-btn" onclick="confirmDeleteNote('${activeSub.id}', '${n.id}')" style="color: var(--accent-rust);">
+              ${trashIcon(12)}
             </button>
           </div>
         </div>
@@ -1184,8 +1249,19 @@ function handleAddNote(e, subjectId) {
   renderStudyView();
 }
 
+function confirmDeleteNote(subjectId, noteId) {
+  showConfirmDialog({
+    title: t("confirm_delete_title"),
+    message: currentLang === "th" ? "ยืนยันการลบโน้ตนี้?" : "Confirm deletion of this note?",
+    onConfirm: () => {
+      StudyStore.deleteNote(subjectId, noteId);
+      renderStudyView();
+    }
+  });
+}
+
 // ==========================================================================
-// 9. POMODORO FOCUS TIMER
+// 10. POMODORO FOCUS TIMER
 // ==========================================================================
 class Pomodoro {
   static init() {
@@ -1277,50 +1353,46 @@ class Pomodoro {
 }
 
 // ==========================================================================
-// 10. INTERACTIVE DEMO SANDBOX (Isolated from Clean User Workspace)
+// 11. INTERACTIVE DEMO SANDBOX (With Checklist Trash Icons!)
 // ==========================================================================
 const DEFAULT_DEMO_TASKS = [
   {
-    id: "demo-task-1",
+    id: "demo_t1",
     title: "Implement Distributed Cache Architecture",
     description: "Benchmark Redis vs Memory cache for high-concurrency microservices.",
     priority: "HIGH",
     status: "IN_PROGRESS",
     dueDate: new Date(Date.now() + 86400000 * 2).toISOString().split("T")[0],
-    tags: ["BACKEND", "PERFORMANCE"],
   },
   {
-    id: "demo-task-2",
+    id: "demo_t2",
     title: "Submit Software Engineering Term Project",
     description: "Deliver complete system architecture document and demo release.",
     priority: "URGENT",
     status: "TODO",
     dueDate: new Date(Date.now() + 86400000).toISOString().split("T")[0],
-    tags: ["UNIVERSITY", "SUBMISSION"],
   },
   {
-    id: "demo-task-3",
+    id: "demo_t3",
     title: "Brutalist Design System Specification",
     description: "Define 0px border radius tokens and earth-tone parchment palettes.",
     priority: "MEDIUM",
     status: "REVIEW",
     dueDate: new Date(Date.now() - 86400000).toISOString().split("T")[0],
-    tags: ["DESIGN", "UI/UX"],
   },
   {
-    id: "demo-task-4",
+    id: "demo_t4",
     title: "Database Schema Normalization",
     description: "Review third normal form compliance on examination models.",
     priority: "LOW",
     status: "DONE",
     dueDate: new Date(Date.now() - 86400000 * 3).toISOString().split("T")[0],
-    tags: ["DATABASE"],
   }
 ];
 
 const DEFAULT_DEMO_SUBJECTS = [
   {
-    id: "demo-sub-1",
+    id: "demo_s1",
     code: "CS301",
     title: "Algorithms & Distributed Systems",
     examDate: new Date(Date.now() + 86400000 * 8).toISOString().split("T")[0] + "T09:00",
@@ -1340,7 +1412,7 @@ const DEFAULT_DEMO_SUBJECTS = [
     ]
   },
   {
-    id: "demo-sub-2",
+    id: "demo_s2",
     code: "MATH215",
     title: "Linear Algebra & Vector Spaces",
     examDate: new Date(Date.now() + 86400000 * 14).toISOString().split("T")[0] + "T13:30",
@@ -1361,7 +1433,7 @@ const DEFAULT_DEMO_SUBJECTS = [
 
 let demoTasks = JSON.parse(JSON.stringify(DEFAULT_DEMO_TASKS));
 let demoSubjects = JSON.parse(JSON.stringify(DEFAULT_DEMO_SUBJECTS));
-let activeDemoSubjectId = "demo-sub-1";
+let activeDemoSubjectId = "demo_s1";
 
 function renderDemoSandbox() {
   const container = document.getElementById("demo-interactive-content");
@@ -1378,7 +1450,7 @@ function renderDemoSandbox() {
       <div class="box-header">
         <div>
           <span class="font-mono text-accent" style="font-weight: 800; font-size: 0.75rem;">SIMULATION KANBAN</span>
-          <h3 class="font-mono" style="font-size: 1.15rem; font-weight: 800;">${t("work_title")} (DEMO SANDBOX)</h3>
+          <h3 class="font-mono" style="font-size: 1.15rem; font-weight: 800;">${t("work_title")} (DEMO)</h3>
         </div>
         <button class="btn btn-primary btn-sm" onclick="openNewDemoTaskModal()">+ ADD DEMO TASK</button>
       </div>
@@ -1404,17 +1476,19 @@ function renderDemoSandbox() {
         <div class="task-card" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', '${task.id}')">
           <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <span class="badge badge-${task.priority.toLowerCase()}">${t("work_filter_" + task.priority.toLowerCase())}</span>
-            <button class="card-del-btn" onclick="handleDemoDeleteTask('${task.id}')" title="Delete">[DEL]</button>
+            <button class="card-del-btn" onclick="confirmDeleteDemoTask('${task.id}')" title="Delete">
+              ${trashIcon(13)}
+            </button>
           </div>
           <h4 style="font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700; color: var(--text);">${escapeHtml(task.title)}</h4>
           <p style="font-family: var(--font-sans); font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(task.description || "")}</p>
           <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 0.35rem; font-family: var(--font-mono); font-size: 0.65rem;">
-            <span>${task.dueDate ? `DUE: ${task.dueDate}` : "NO DUE"}</span>
+            <span>${task.dueDate ? `DUE: ${task.dueDate}` : t("card_no_due")}</span>
             <select onchange="handleDemoTaskStatusChange('${task.id}', this.value)" class="form-select" style="width: auto; padding: 2px 4px; font-size: 0.65rem;">
-              <option value="TODO" ${task.status === "TODO" ? "selected" : ""}>TODO</option>
-              <option value="IN_PROGRESS" ${task.status === "IN_PROGRESS" ? "selected" : ""}>ACTIVE</option>
-              <option value="REVIEW" ${task.status === "REVIEW" ? "selected" : ""}>REVIEW</option>
-              <option value="DONE" ${task.status === "DONE" ? "selected" : ""}>DONE</option>
+              <option value="TODO" ${task.status === "TODO" ? "selected" : ""}>${t("status_todo")}</option>
+              <option value="IN_PROGRESS" ${task.status === "IN_PROGRESS" ? "selected" : ""}>${t("status_in_progress")}</option>
+              <option value="REVIEW" ${task.status === "REVIEW" ? "selected" : ""}>${t("status_review")}</option>
+              <option value="DONE" ${task.status === "DONE" ? "selected" : ""}>${t("status_done")}</option>
             </select>
           </div>
         </div>
@@ -1431,17 +1505,17 @@ function renderDemoSandbox() {
       </div>
     </div>
 
-    <!-- 2. Interactive Demo Exam Hub -->
+    <!-- 2. Interactive Demo Exam Hub (With Chapter Delete Trash Icon!) -->
     <div class="box box-surface anim-stagger-3">
       <div class="box-header">
         <div>
           <span class="font-mono text-accent" style="font-weight: 800; font-size: 0.75rem;">SIMULATION EXAM READINESS</span>
-          <h3 class="font-mono" style="font-size: 1.15rem; font-weight: 800;">${t("study_title")} (DEMO SANDBOX)</h3>
+          <h3 class="font-mono" style="font-size: 1.15rem; font-weight: 800;">${t("study_title")} (DEMO)</h3>
         </div>
         <span class="font-mono text-accent" style="font-size: 1.25rem; font-weight: 900;">READINESS: ${pct}%</span>
       </div>
 
-      <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem;">
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
   `;
 
   demoSubjects.forEach((sub) => {
@@ -1465,10 +1539,13 @@ function renderDemoSandbox() {
 
   activeSub?.chapters?.forEach((ch) => {
     html += `
-      <div class="checklist-item ${ch.isCompleted ? "done" : ""}" onclick="handleDemoToggleChapter('${activeSub.id}', '${ch.id}')" style="cursor: pointer;">
-        <input type="checkbox" ${ch.isCompleted ? "checked" : ""} pointer-events="none" />
-        <span style="flex: 1; font-weight: 500; font-size: 0.85rem;">${escapeHtml(ch.title)}</span>
-        <span class="font-mono text-muted" style="font-size: 0.7rem;">${ch.isCompleted ? "COMPLETED" : "PENDING"}</span>
+      <div class="checklist-item ${ch.isCompleted ? "done" : ""}">
+        <input type="checkbox" ${ch.isCompleted ? "checked" : ""} onchange="handleDemoToggleChapter('${activeSub.id}', '${ch.id}')" style="cursor: pointer;" />
+        <span style="flex: 1; font-weight: 500; font-size: 0.85rem;" onclick="handleDemoToggleChapter('${activeSub.id}', '${ch.id}')">${escapeHtml(ch.title)}</span>
+        <span class="font-mono text-muted" style="font-size: 0.7rem; margin-right: 0.5rem;">${ch.isCompleted ? t("status_done") : "PENDING"}</span>
+        <button class="card-del-btn" onclick="confirmDeleteDemoChapter('${activeSub.id}', '${ch.id}')" title="Delete topic">
+          ${trashIcon(13)}
+        </button>
       </div>
     `;
   });
@@ -1494,9 +1571,15 @@ function handleDemoTaskStatusChange(taskId, status) {
   renderDemoSandbox();
 }
 
-function handleDemoDeleteTask(taskId) {
-  demoTasks = demoTasks.filter((t) => t.id !== taskId);
-  renderDemoSandbox();
+function confirmDeleteDemoTask(taskId) {
+  showConfirmDialog({
+    title: t("confirm_delete_title"),
+    message: currentLang === "th" ? "ยืนยันการลบงานจำลองนี้?" : "Confirm deletion of this demo task?",
+    onConfirm: () => {
+      demoTasks = demoTasks.filter((t) => t.id !== taskId);
+      renderDemoSandbox();
+    }
+  });
 }
 
 function handleDemoToggleChapter(subId, chId) {
@@ -1508,11 +1591,26 @@ function handleDemoToggleChapter(subId, chId) {
   renderDemoSandbox();
 }
 
+function confirmDeleteDemoChapter(subId, chId) {
+  showConfirmDialog({
+    title: t("confirm_delete_title"),
+    message: currentLang === "th" ? "ยืนยันการลบหัวข้อนี้ออกจากเช็คลิสต์จำลอง?" : "Confirm deletion of this demo syllabus topic?",
+    onConfirm: () => {
+      demoSubjects = demoSubjects.map((sub) => {
+        if (sub.id !== subId) return sub;
+        const chapters = sub.chapters.filter((c) => c.id !== chId);
+        return { ...sub, chapters };
+      });
+      renderDemoSandbox();
+    }
+  });
+}
+
 function openNewDemoTaskModal() {
   const title = prompt(currentLang === "th" ? "กรอกชื่องานจำลอง:" : "Enter demo task title:", "Benchmark Distributed Consensus");
   if (title) {
     demoTasks.unshift({
-      id: "demo-task-" + Date.now(),
+      id: "demo_t_" + Date.now(),
       title,
       description: "Added within interactive demo sandbox.",
       priority: "HIGH",
@@ -1531,7 +1629,7 @@ function resetDemoData() {
 }
 
 // ==========================================================================
-// 11. MODALS & FORMS
+// 12. MODALS & FORMS
 // ==========================================================================
 function openNewTaskModal(defaultStatus = "TODO") {
   const modal = document.getElementById("task-modal");
@@ -1565,8 +1663,11 @@ function closeTaskModal() {
 function handleTaskFormSubmit(e) {
   e.preventDefault();
   const id = document.getElementById("task-id-input").value;
+  const title = document.getElementById("task-title-input").value.trim();
+  if (!title) return;
+
   const taskData = {
-    title: document.getElementById("task-title-input").value.trim(),
+    title,
     description: document.getElementById("task-desc-input").value.trim(),
     priority: document.getElementById("task-priority-select").value,
     status: document.getElementById("task-status-select").value,
@@ -1583,10 +1684,10 @@ function handleTaskFormSubmit(e) {
   renderWorkView();
 }
 
-function handleModalDeleteCurrentTask() {
+function confirmDeleteTaskFromModal() {
   const id = document.getElementById("task-id-input").value;
   if (id) {
-    handleDeleteTask(id);
+    confirmDeleteTask(id);
   }
 }
 
@@ -1602,10 +1703,15 @@ function closeSubjectModal() {
 
 function handleSubjectFormSubmit(e) {
   e.preventDefault();
+  const code = document.getElementById("sub-code-input").value.trim().toUpperCase();
+  const title = document.getElementById("sub-title-input").value.trim();
+  const examDate = document.getElementById("sub-date-input").value;
+  if (!code || !title || !examDate) return;
+
   const subData = {
-    code: document.getElementById("sub-code-input").value.trim().toUpperCase(),
-    title: document.getElementById("sub-title-input").value.trim(),
-    examDate: document.getElementById("sub-date-input").value,
+    code,
+    title,
+    examDate,
     room: document.getElementById("sub-room-input").value.trim() || "TBA",
     targetGrade: document.getElementById("sub-grade-select").value,
     priority: document.getElementById("sub-priority-select").value,
@@ -1618,7 +1724,7 @@ function handleSubjectFormSubmit(e) {
 }
 
 // ==========================================================================
-// 12. NOTIFICATION DROPDOWN
+// 13. NOTIFICATION DROPDOWN
 // ==========================================================================
 function toggleNotificationCenter() {
   const panel = document.getElementById("notification-dropdown");
@@ -1646,7 +1752,7 @@ function escapeHtml(str) {
 }
 
 // ==========================================================================
-// 13. BOOTSTRAP APPLICATION
+// 14. BOOTSTRAP APPLICATION
 // ==========================================================================
 document.addEventListener("DOMContentLoaded", () => {
   applyTheme(currentTheme);
