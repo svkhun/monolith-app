@@ -14,7 +14,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={id}
-            className="block font-mono text-xs uppercase tracking-wider text-neutral-700 dark:text-neutral-300 font-semibold"
+            className="block font-mono text-xs uppercase tracking-wider text-[#786C60] dark:text-[#9C9082] font-semibold"
           >
             {label}
           </label>
@@ -24,14 +24,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           id={id}
           ref={ref}
           className={cn(
-            "flex h-10 w-full rounded-none border border-neutral-300 bg-white px-3.5 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 transition-colors focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 dark:border-[#2b2b2b] dark:bg-[#141414] dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-neutral-100 dark:focus:ring-neutral-100 disabled:cursor-not-allowed disabled:opacity-50",
-            error && "border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-700",
+            "flex h-10 w-full rounded-none border border-[#DDD4C5] bg-[#FBF8F3] px-3.5 py-2 text-sm text-[#26201A] placeholder:text-[#9C9082] transition-colors focus:outline-none focus:border-[#BD682C] focus:ring-1 focus:ring-[#BD682C] dark:border-[#3B332B] dark:bg-[#161311] dark:text-[#EFE8DC] dark:placeholder:text-[#786C60] dark:focus:border-[#BD682C] dark:focus:ring-[#BD682C] disabled:cursor-not-allowed disabled:opacity-50",
+            error && "border-[#B5432D] focus:border-[#B5432D] focus:ring-[#B5432D] dark:border-[#B5432D]",
             className
           )}
           {...props}
         />
         {error && (
-          <p className="font-mono text-xs text-red-600 dark:text-red-400">{error}</p>
+          <p className="font-mono text-xs text-[#B5432D]">{error}</p>
         )}
       </div>
     );

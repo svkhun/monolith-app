@@ -24,23 +24,23 @@ export const Badge: React.FC<BadgeProps> = ({
 
   const variants = {
     default:
-      "bg-neutral-100 text-neutral-800 border-neutral-300 dark:bg-[#1f1f1f] dark:text-neutral-300 dark:border-[#333333]",
+      "bg-[#F3EDE4] text-[#26201A] border-[#DDD4C5] dark:bg-[#201C18] dark:text-[#EFE8DC] dark:border-[#3B332B]",
     neutral:
-      "bg-neutral-50 text-neutral-600 border-neutral-200 dark:bg-[#141414] dark:text-neutral-400 dark:border-[#262626]",
+      "bg-[#FBF8F3] text-[#786C60] border-[#DDD4C5] dark:bg-[#161311] dark:text-[#9C9082] dark:border-[#3B332B]",
     low:
-      "bg-neutral-100 text-neutral-700 border-neutral-300 dark:bg-neutral-900 dark:text-neutral-400 dark:border-neutral-800",
+      "bg-[#F3EDE4] text-[#786C60] border-[#DDD4C5] dark:bg-[#201C18] dark:text-[#9C9082] dark:border-[#3B332B]",
     medium:
-      "bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-900/60",
+      "bg-[#FDF3E3] text-[#A66E22] border-[#E8D1A7] dark:bg-[#332612]/50 dark:text-[#E8C07A] dark:border-[#57411E]",
     high:
-      "bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900/60",
+      "bg-[#FCEDE3] text-[#B85C20] border-[#F2CBB2] dark:bg-[#361E10]/50 dark:text-[#F7A977] dark:border-[#5E3218]",
     urgent:
-      "bg-red-50 text-red-800 border-red-200 dark:bg-red-950/50 dark:text-red-300 dark:border-red-900/80 font-bold",
+      "bg-[#FCE8E6] text-[#B53D31] border-[#F5BDB8] dark:bg-[#3D1412]/60 dark:text-[#FFA39E] dark:border-[#6B2420] font-bold",
     todo:
-      "bg-neutral-100 text-neutral-800 border-neutral-300 dark:bg-[#1a1a1a] dark:text-neutral-300 dark:border-[#2b2b2b]",
+      "bg-[#F3EDE4] text-[#786C60] border-[#DDD4C5] dark:bg-[#201C18] dark:text-[#9C9082] dark:border-[#3B332B]",
     in_progress:
-      "bg-sky-50 text-sky-800 border-sky-200 dark:bg-sky-950/40 dark:text-sky-300 dark:border-sky-900/70",
+      "bg-[#FDF3E3] text-[#B87025] border-[#E8D1A7] dark:bg-[#332612]/50 dark:text-[#F0B86E] dark:border-[#57411E]",
     done:
-      "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900/70",
+      "bg-[#EEF5EB] text-[#4A7338] border-[#C8DEC1] dark:bg-[#1C2E17]/50 dark:text-[#A7D492] dark:border-[#325227]",
   };
 
   return (

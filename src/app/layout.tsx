@@ -19,7 +19,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "MONOLITH // Work Management & University Exam Hub",
   description:
-    "Brutalist high-density system for professional project management and university examination readiness.",
+    "Classic earth-tone workspace engineered for professional project management and university examination readiness.",
 };
 
 export default function RootLayout({
@@ -33,14 +33,14 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable} dark`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-[#FFFFFF] dark:bg-[#0A0A0A] text-[#0A0A0A] dark:text-[#EDEDED] font-sans antialiased flex flex-col">
+      <body className="min-h-screen bg-[#FBF8F3] dark:bg-[#161311] text-[#26201A] dark:text-[#EFE8DC] font-sans antialiased flex flex-col transition-colors duration-200">
         <Providers>
           <Navbar />
           <main className="flex-1 w-full max-w-7xl mx-auto p-4 sm:p-6">
             {children}
           </main>
-          <footer className="border-t border-neutral-300 dark:border-[#262626] py-4 px-6 text-center font-mono text-[10px] text-neutral-500 uppercase tracking-widest">
-            MONOLITH ARCHITECTURE // ZERO RADIUS FORM FACTOR // PRODUCTION BUILD
+          <footer className="border-t border-[#DDD4C5] dark:border-[#3B332B] py-5 px-6 text-center font-mono text-xs text-[#786C60] dark:text-[#9C9082] uppercase tracking-widest bg-[#F3EDE4]/40 dark:bg-[#201C18]/40">
+            MONOLITH CORE // ARCHITECTURAL FORM FACTOR // EST. 2026
           </footer>
         </Providers>
       </body>

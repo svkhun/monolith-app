@@ -22,25 +22,34 @@ const config: Config = {
     },
     extend: {
       colors: {
-        monolith: {
+        earth: {
           bg: {
-            dark: "#0A0A0A",
-            darkSurface: "#141414",
-            darkElevated: "#1A1A1A",
-            light: "#FFFFFF",
-            lightSurface: "#F5F5F5",
-            lightElevated: "#FAFAFA",
+            light: "#FBF8F3", // Warm parchment / antique paper
+            lightSurface: "#F3EDE4", // Warm sand / linen
+            lightElevated: "#EBE3D7",
+            dark: "#161311", // Deep roasted espresso / charred umber
+            darkSurface: "#201C18", // Dark walnut / cacao
+            darkElevated: "#2A2520",
           },
           border: {
-            dark: "#262626",
-            darkHover: "#404040",
-            light: "#E5E5E5",
-            lightHover: "#D4D4D4",
+            light: "#DDD4C5", // Warm taupe border
+            lightHover: "#C6BAA8",
+            dark: "#3B332B", // Burnished bronze border
+            darkHover: "#54493E",
+          },
+          text: {
+            light: "#26201A", // Dark roast umber
+            lightMuted: "#6B5F54", // Warm clay
+            dark: "#EFE8DC", // Warm cream / ecru
+            darkMuted: "#9C9082", // Sandstone
           },
           accent: {
-            DEFAULT: "#3B82F6",
-            hover: "#2563EB",
-          }
+            DEFAULT: "#BD682C", // Warm terracotta / classic cognac
+            hover: "#A35620",
+            amber: "#D48B38",
+            olive: "#5C754E",
+            rust: "#B5432D",
+          },
         },
       },
       fontFamily: {

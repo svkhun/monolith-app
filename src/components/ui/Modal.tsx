@@ -53,18 +53,18 @@ export const Modal: React.FC<ModalProps> = ({
         role="dialog"
         aria-modal="true"
         className={cn(
-          "relative z-10 w-full bg-white dark:bg-[#141414] border border-neutral-300 dark:border-[#262626] shadow-2xl rounded-none",
+          "relative z-10 w-full bg-[#FBF8F3] dark:bg-[#161311] border border-[#DDD4C5] dark:border-[#3B332B] shadow-2xl rounded-none",
           widthClasses[maxWidth]
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-neutral-200 dark:border-[#262626]">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#DDD4C5] dark:border-[#3B332B]">
           <div>
-            <h2 className="font-mono text-sm font-bold uppercase tracking-wider text-neutral-900 dark:text-neutral-100">
+            <h2 className="font-mono text-sm font-bold uppercase tracking-wider text-[#26201A] dark:text-[#EFE8DC]">
               {title}
             </h2>
             {description && (
-              <p className="mt-0.5 text-xs text-neutral-600 dark:text-neutral-400">
+              <p className="mt-0.5 text-xs text-[#786C60] dark:text-[#9C9082]">
                 {description}
               </p>
             )}
@@ -72,7 +72,7 @@ export const Modal: React.FC<ModalProps> = ({
           <button
             onClick={onClose}
             aria-label="Close modal"
-            className="p-1 text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-[#1f1f1f] rounded-none border border-transparent hover:border-neutral-300 dark:hover:border-[#333333] transition-colors"
+            className="p-1 text-[#786C60] hover:text-[#26201A] dark:text-[#9C9082] dark:hover:text-[#EFE8DC] hover:bg-[#F3EDE4] dark:hover:bg-[#201C18] rounded-none border border-transparent hover:border-[#DDD4C5] dark:hover:border-[#3B332B] transition-colors"
           >
             <X className="w-4 h-4" />
           </button>

@@ -10,19 +10,19 @@ export interface ButtonProps
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "secondary", size = "md", children, disabled, ...props }, ref) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-mono uppercase tracking-wider font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-500 disabled:opacity-50 disabled:pointer-events-none rounded-none select-none";
+      "inline-flex items-center justify-center font-mono uppercase tracking-wider font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#BD682C] disabled:opacity-50 disabled:pointer-events-none rounded-none select-none";
 
     const variants = {
       primary:
-        "bg-neutral-900 text-neutral-50 hover:bg-neutral-800 border border-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200 dark:border-neutral-100 shadow-sm",
+        "bg-[#26201A] text-[#FBF8F3] hover:bg-[#3B322B] border border-[#26201A] dark:bg-[#EFE8DC] dark:text-[#161311] dark:hover:bg-[#DDD4C5] dark:border-[#EFE8DC] shadow-sm",
       secondary:
-        "bg-neutral-100 text-neutral-900 hover:bg-neutral-200 border border-neutral-300 dark:bg-[#161616] dark:text-neutral-200 dark:hover:bg-[#222222] dark:border-[#2b2b2b]",
+        "bg-[#F3EDE4] text-[#26201A] hover:bg-[#EBE3D7] border border-[#DDD4C5] dark:bg-[#201C18] dark:text-[#EFE8DC] dark:hover:bg-[#2A2520] dark:border-[#3B332B]",
       outline:
-        "bg-transparent text-neutral-800 hover:bg-neutral-100 border border-neutral-300 dark:text-neutral-200 dark:hover:bg-[#161616] dark:border-[#2b2b2b]",
+        "bg-transparent text-[#26201A] hover:bg-[#F3EDE4] border border-[#DDD4C5] dark:text-[#EFE8DC] dark:hover:bg-[#201C18] dark:border-[#3B332B]",
       danger:
-        "bg-red-600 text-white hover:bg-red-700 border border-red-700 dark:bg-red-950/60 dark:text-red-300 dark:border-red-900 dark:hover:bg-red-900/70",
+        "bg-[#B5432D] text-white hover:bg-[#9E3924] border border-[#B5432D] dark:bg-[#7D2918]/70 dark:text-[#FFC4B8] dark:border-[#A83822] dark:hover:bg-[#8F301D]/80",
       ghost:
-        "bg-transparent text-neutral-700 hover:bg-neutral-100 border border-transparent dark:text-neutral-300 dark:hover:bg-[#161616] dark:hover:text-neutral-100",
+        "bg-transparent text-[#6B5F54] hover:bg-[#F3EDE4] border border-transparent dark:text-[#9C9082] dark:hover:bg-[#201C18] dark:hover:text-[#EFE8DC]",
     };
 
     const sizes = {

@@ -11,8 +11,8 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          "rounded-none border border-neutral-200 bg-white text-neutral-900 transition-colors dark:border-[#262626] dark:bg-[#141414] dark:text-neutral-100",
-          elevated && "dark:bg-[#1A1A1A] bg-neutral-50 shadow-sm",
+          "rounded-none border border-[#DDD4C5] bg-[#FBF8F3] text-[#26201A] transition-colors dark:border-[#3B332B] dark:bg-[#161311] dark:text-[#EFE8DC]",
+          elevated && "bg-[#F3EDE4] dark:bg-[#201C18] shadow-sm",
           className
         )}
         {...props}
@@ -32,7 +32,7 @@ export const CardHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }) => (
   <div
     className={cn(
-      "flex flex-col space-y-1.5 p-4 border-b border-neutral-200 dark:border-[#262626]",
+      "flex flex-col space-y-1.5 p-4 border-b border-[#DDD4C5] dark:border-[#3B332B]",
       className
     )}
     {...props}
@@ -48,7 +48,7 @@ export const CardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
 }) => (
   <h3
     className={cn(
-      "font-mono text-sm font-semibold uppercase tracking-wider text-neutral-900 dark:text-neutral-100",
+      "font-mono text-sm font-semibold uppercase tracking-wider text-[#26201A] dark:text-[#EFE8DC]",
       className
     )}
     {...props}
@@ -64,7 +64,7 @@ export const CardDescription: React.FC<React.HTMLAttributes<HTMLParagraphElement
 }) => (
   <p
     className={cn(
-      "text-xs text-neutral-600 dark:text-neutral-400 font-sans",
+      "text-xs text-[#786C60] dark:text-[#9C9082] font-sans",
       className
     )}
     {...props}
@@ -86,7 +86,7 @@ export const CardFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }) => (
   <div
     className={cn(
-      "flex items-center p-4 border-t border-neutral-200 dark:border-[#262626]",
+      "flex items-center p-4 border-t border-[#DDD4C5] dark:border-[#3B332B]",
       className
     )}
     {...props}
