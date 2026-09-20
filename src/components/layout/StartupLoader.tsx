@@ -114,7 +114,7 @@ export const StartupLoader: React.FC = () => {
         </div>
 
         <div className="font-mono text-[9px] text-[#786C60]/80 dark:text-[#9C9082]/80 uppercase tracking-widest pt-1 text-center">
-          <span>[ CLICK ANYWHERE TO ENTER / คลิกที่ใดก็ได้เพื่อเข้าสู่ระบบ ]</span>
+          <span>[ CLICK ANYWHERE TO ENTER ]</span>
         </div>
       </div>
     </div>
