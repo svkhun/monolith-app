@@ -11,7 +11,7 @@ import {
   LayoutGrid,
   Zap,
 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 
 export default function HomePage() {
@@ -50,25 +50,31 @@ export default function HomePage() {
 
           {/* Direct Action Buttons */}
           <div className="pt-4 flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Link href="/work" prefetch={true} className="w-full sm:w-auto">
-              <Button
-                variant="primary"
-                size="lg"
-                className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 bg-[#26201A] text-[#FBF8F3] hover:bg-[#3B322B] dark:bg-[#EFE8DC] dark:text-[#161311] dark:hover:bg-[#DDD4C5]"
-              >
-                <span>{t("home_cta_open")}</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+            <Link
+              href="/work"
+              prefetch={true}
+              className={buttonVariants({
+                variant: "primary",
+                size: "lg",
+                className:
+                  "w-full sm:w-auto flex items-center justify-center gap-2 px-8 bg-[#26201A] text-[#FBF8F3] hover:bg-[#3B322B] dark:bg-[#EFE8DC] dark:text-[#161311] dark:hover:bg-[#DDD4C5]",
+              })}
+            >
+              <span>{t("home_cta_open")}</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
-            <Link href="/demo" prefetch={true} className="w-full sm:w-auto">
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 border-[#DDD4C5] dark:border-[#3B332B] hover:bg-[#EBE3D7] dark:hover:bg-[#2A2520]"
-              >
-                <PlayCircle className="w-4 h-4 text-[#BD682C]" />
-                <span>{t("home_cta_demo")}</span>
-              </Button>
+            <Link
+              href="/demo"
+              prefetch={true}
+              className={buttonVariants({
+                variant: "outline",
+                size: "lg",
+                className:
+                  "w-full sm:w-auto flex items-center justify-center gap-2 px-6 border-[#DDD4C5] dark:border-[#3B332B] hover:bg-[#EBE3D7] dark:hover:bg-[#2A2520]",
+              })}
+            >
+              <PlayCircle className="w-4 h-4 text-[#BD682C]" />
+              <span>{t("home_cta_demo")}</span>
             </Link>
           </div>
         </div>
@@ -89,15 +95,17 @@ export default function HomePage() {
             </h3>
           </div>
 
-          <Link href="/work" prefetch={true}>
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-1.5 border-[#DDD4C5] dark:border-[#3B332B]"
-            >
-              <span>{t("home_sec1_btn")}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Button>
+          <Link
+            href="/work"
+            prefetch={true}
+            className={buttonVariants({
+              variant: "outline",
+              size: "sm",
+              className: "flex items-center gap-1.5 border-[#DDD4C5] dark:border-[#3B332B]",
+            })}
+          >
+            <span>{t("home_sec1_btn")}</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
@@ -149,15 +157,17 @@ export default function HomePage() {
             </h3>
           </div>
 
-          <Link href="/study" prefetch={true}>
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-1.5 border-[#DDD4C5] dark:border-[#3B332B]"
-            >
-              <span>{t("home_sec2_btn")}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Button>
+          <Link
+            href="/study"
+            prefetch={true}
+            className={buttonVariants({
+              variant: "outline",
+              size: "sm",
+              className: "flex items-center gap-1.5 border-[#DDD4C5] dark:border-[#3B332B]",
+            })}
+          >
+            <span>{t("home_sec2_btn")}</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 

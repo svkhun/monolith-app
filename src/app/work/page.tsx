@@ -35,15 +35,34 @@ export default function WorkPage() {
   const [modalDefaultStatus, setModalDefaultStatus] = useState<TaskStatus>("TODO");
 
   useEffect(() => {
+    // 1. Instantly populate from local cache if available (0ms load!)
+    try {
+      const cached = localStorage.getItem("monolith_cached_tasks");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setTasks(parsed);
+          setLoading(false);
+        }
+      }
+    } catch {
+      // Ignore parse error
+    }
+
+    // 2. Fetch fresh data in background
     loadTasks();
   }, []);
 
   const loadTasks = async () => {
-    setLoading(true);
     try {
       const res = await getTasks();
       if (res.success && res.tasks) {
         setTasks(res.tasks as TaskItem[]);
+        try {
+          localStorage.setItem("monolith_cached_tasks", JSON.stringify(res.tasks));
+        } catch {
+          // Ignore quota error
+        }
       }
     } catch {
       // Clean workspace

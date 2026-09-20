@@ -17,7 +17,7 @@ import {
   Info,
   RotateCcw,
 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import { TaskItem, ExamSubjectItem, QuickNoteItem, ViewMode, TaskStatus, Priority } from "@/types";
 import { TaskKanban } from "@/components/work/TaskKanban";
 import { TaskListView } from "@/components/work/TaskListView";
@@ -363,11 +363,16 @@ export default function DemoPage() {
               <RotateCcw className="w-4 h-4" />
               <span>RESET DEMO DATA</span>
             </Button>
-            <Link href="/work">
-              <Button variant="primary" size="md" className="w-full flex items-center gap-2">
-                <span>GO TO MY WORKSPACE</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+            <Link
+              href="/work"
+              className={buttonVariants({
+                variant: "primary",
+                size: "md",
+                className: "w-full flex items-center gap-2",
+              })}
+            >
+              <span>GO TO MY WORKSPACE</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

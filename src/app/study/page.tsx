@@ -34,17 +34,37 @@ export default function StudyPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // 1. Instantly populate from local cache if available (0ms load!)
+    try {
+      const cached = localStorage.getItem("monolith_cached_subjects");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSubjects(parsed);
+          setSelectedSubjectId(parsed[0].id);
+          setLoading(false);
+        }
+      }
+    } catch {
+      // Ignore parse error
+    }
+
+    // 2. Fetch fresh data in background
     loadSubjects();
   }, []);
 
   const loadSubjects = async () => {
-    setLoading(true);
     try {
       const res = await getExamSubjects();
       if (res.success && res.subjects) {
         setSubjects(res.subjects as ExamSubjectItem[]);
         if (res.subjects.length > 0 && !selectedSubjectId) {
           setSelectedSubjectId(res.subjects[0].id);
+        }
+        try {
+          localStorage.setItem("monolith_cached_subjects", JSON.stringify(res.subjects));
+        } catch {
+          // Ignore quota error
         }
       }
     } catch {

@@ -9,7 +9,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { NotificationCenter } from "./NotificationCenter";
 import { LanguageToggle } from "./LanguageToggle";
 import { useLanguage } from "./LanguageProvider";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonVariants } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 export const Navbar: React.FC = () => {
@@ -117,14 +117,17 @@ export const Navbar: React.FC = () => {
             </div>
           ) : (
             <div className="flex items-center space-x-2">
-              <Link href="/login" prefetch={true}>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-[#DDD4C5] dark:border-[#3B332B] hover:bg-[#EBE3D7] dark:hover:bg-[#2A2520]"
-                >
-                  {t("nav_signin")}
-                </Button>
+              <Link
+                href="/login"
+                prefetch={true}
+                className={buttonVariants({
+                  variant: "outline",
+                  size: "sm",
+                  className:
+                    "border-[#DDD4C5] dark:border-[#3B332B] hover:bg-[#EBE3D7] dark:hover:bg-[#2A2520]",
+                })}
+              >
+                {t("nav_signin")}
               </Link>
             </div>
           )}
