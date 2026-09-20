@@ -27,7 +27,7 @@ export const StudyChapterSchema = z.object({
 });
 
 export const QuickNoteSchema = z.object({
-  examSubjectId: z.string().optional().nullable(),
+  examSubjectId: z.string().min(1, "Subject ID is required"),
   title: z.string().min(1, "Note title is required").max(120),
   content: z.string().min(1, "Content cannot be empty"),
   isPinned: z.boolean().default(false),

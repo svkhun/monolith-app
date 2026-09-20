@@ -10,7 +10,7 @@ interface QuickNotesBoardProps {
   subjects: ExamSubjectItem[];
   selectedSubjectId?: string | null;
   onAddNote: (formData: {
-    examSubjectId?: string | null;
+    examSubjectId: string;
     title: string;
     content: string;
     isPinned?: boolean;
@@ -43,10 +43,15 @@ export const QuickNotesBoard: React.FC<QuickNotesBoardProps> = ({
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
 
+    const targetSubId = subjectId || selectedSubjectId || subjects[0]?.id;
+    if (!targetSubId) {
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await onAddNote({
-        examSubjectId: subjectId || null,
+        examSubjectId: targetSubId,
         title: title.trim(),
         content: content.trim(),
         isPinned,

@@ -168,8 +168,6 @@ export default function StudyPage() {
                     isCompleted: res.chapter.isCompleted,
                     estimatedHours: res.chapter.estimatedHours,
                     orderIndex: res.chapter.orderIndex,
-                    createdAt: res.chapter.createdAt.toISOString(),
-                    updatedAt: res.chapter.updatedAt.toISOString(),
                   },
                 ],
               }
@@ -190,7 +188,7 @@ export default function StudyPage() {
   };
 
   const handleAddNote = async (formData: {
-    examSubjectId?: string | null;
+    examSubjectId: string;
     title: string;
     content: string;
     isPinned?: boolean;
@@ -203,7 +201,6 @@ export default function StudyPage() {
         title: res.note.title,
         content: res.note.content,
         isPinned: res.note.isPinned,
-        createdAt: res.note.createdAt.toISOString(),
         updatedAt: res.note.updatedAt.toISOString(),
       };
       setSubjects((prev) =>

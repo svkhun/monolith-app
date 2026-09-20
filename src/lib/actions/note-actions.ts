@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { QuickNoteSchema } from "@/lib/validations";
 
 export async function createQuickNote(formData: {
-  examSubjectId?: string | null;
+  examSubjectId: string;
   title: string;
   content: string;
   isPinned?: boolean;
@@ -15,7 +15,7 @@ export async function createQuickNote(formData: {
 
     const note = await db.quickNote.create({
       data: {
-        examSubjectId: validated.examSubjectId || null,
+        examSubjectId: validated.examSubjectId,
         title: validated.title,
         content: validated.content,
         isPinned: validated.isPinned || false,

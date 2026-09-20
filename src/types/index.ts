@@ -23,17 +23,17 @@ export interface StudyChapterItem {
   isCompleted: boolean;
   estimatedHours: number;
   orderIndex: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface QuickNoteItem {
   id: string;
-  examSubjectId?: string | null;
+  examSubjectId: string;
   title: string;
   content: string;
   isPinned: boolean;
-  createdAt: string;
+  createdAt?: string;
   updatedAt: string;
 }
 

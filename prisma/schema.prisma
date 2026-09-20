@@ -1,13 +1,14 @@
 // Monolith App - Prisma Schema
-// Database & ORM: PostgreSQL
+// Database & ORM: Neon PostgreSQL (Serverless Connection Pooling)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum Priority {
@@ -27,16 +28,13 @@ model User {
   id               String            @id @default(cuid())
   name             String?
   email            String            @unique
-  passwordHash     String
-  themePreference  String            @default("dark") // "dark" | "light"
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-
+  passwordHash     String?
+  themePreference  String            @default("dark")
   tasks            Task[]
   examSubjects     ExamSubject[]
   pomodoroSessions PomodoroSession[]
-
-  @@map("users")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 }
 
 model Task {
@@ -44,7 +42,7 @@ model Task {
   userId      String
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   title       String
-  description String?    @db.Text
+  description String?
   priority    Priority   @default(MEDIUM)
   status      TaskStatus @default(TODO)
   dueDate     DateTime?
@@ -54,30 +52,24 @@ model Task {
   updatedAt   DateTime   @updatedAt
 
   @@index([userId])
-  @@index([status])
-  @@index([dueDate])
-  @@map("tasks")
 }
 
 model ExamSubject {
   id               String            @id @default(cuid())
   userId           String
   user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  code             String            // e.g. "CS201", "MATH101"
+  code             String
   name             String
   examDate         DateTime
   roomLocation     String?
-  targetGrade      String?           // e.g. "A", "4.0"
+  targetGrade      String?
+  chapters         StudyChapter[]
+  quickNotes       QuickNote[]
+  pomodoroSessions PomodoroSession[]
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 
-  chapters         StudyChapter[]
-  pomodoroSessions PomodoroSession[]
-  notes            QuickNote[]
-
   @@index([userId])
-  @@index([examDate])
-  @@map("exam_subjects")
 }
 
 model StudyChapter {
@@ -88,11 +80,8 @@ model StudyChapter {
   isCompleted    Boolean     @default(false)
   estimatedHours Float       @default(1.0)
   orderIndex     Int         @default(0)
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
 
   @@index([examSubjectId])
-  @@map("study_chapters")
 }
 
 model PomodoroSession {
@@ -105,21 +94,16 @@ model PomodoroSession {
   completedAt     DateTime     @default(now())
 
   @@index([userId])
-  @@index([examSubjectId])
-  @@map("pomodoro_sessions")
 }
 
 model QuickNote {
-  id            String       @id @default(cuid())
-  examSubjectId String?
-  examSubject   ExamSubject? @relation(fields: [examSubjectId], references: [id], onDelete: Cascade)
+  id            String      @id @default(cuid())
+  examSubjectId String
+  examSubject   ExamSubject @relation(fields: [examSubjectId], references: [id], onDelete: Cascade)
   title         String
-  content       String       @db.Text
-  isPinned      Boolean      @default(false)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  content       String
+  isPinned      Boolean     @default(false)
+  updatedAt     DateTime    @updatedAt
 
   @@index([examSubjectId])
-  @@index([isPinned])
-  @@map("quick_notes")
 }

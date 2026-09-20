@@ -28,7 +28,7 @@ export async function getExamSubjects() {
           chapters: {
             orderBy: { orderIndex: "asc" },
           },
-          notes: {
+          quickNotes: {
             orderBy: [{ isPinned: "desc" }, { updatedAt: "desc" }],
           },
         },
@@ -52,12 +52,9 @@ export async function getExamSubjects() {
         completionPercentage,
         chapters: sub.chapters.map((c) => ({
           ...c,
-          createdAt: c.createdAt.toISOString(),
-          updatedAt: c.updatedAt.toISOString(),
         })),
-        notes: sub.notes.map((n) => ({
+        notes: sub.quickNotes.map((n) => ({
           ...n,
-          createdAt: n.createdAt.toISOString(),
           updatedAt: n.updatedAt.toISOString(),
         })),
       };
