@@ -32,11 +32,11 @@ export const metadata: Metadata = {
     "Classic earth-tone workspace engineered for professional project management and university examination readiness.",
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.png", type: "image/png" },
     ],
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
+    shortcut: "/icon.png",
+    apple: "/apple-icon.png",
   },
 };
 
