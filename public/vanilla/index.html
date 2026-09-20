@@ -9,12 +9,12 @@
 </head>
 <body>
 
-  <!-- Top Navigation Progress Indicator -->
+  <!-- Top Navigation Progress Bar -->
   <div id="nav-progress">
     <div id="nav-progress-bar"></div>
   </div>
 
-  <!-- Startup Loader Sequence (Skippable on click or keydown) -->
+  <!-- Startup Boot Loader Overlay (Skippable on click or keydown) -->
   <div id="startup-loader" title="Click anywhere to enter immediately">
     <div class="loader-card animate-arch-in">
       <div class="corner-accent corner-tl"></div>
@@ -50,7 +50,7 @@
   <!-- Top Navigation Bar -->
   <header class="top-nav-bar">
     <div class="top-nav-inner">
-      <!-- Left: Logo & Navigation Tabs -->
+      <!-- Left: Brand Logo & Navigation Links -->
       <div style="display: flex; align-items: center; gap: 1.5rem;">
         <a href="#home" class="nav-brand">
           <div class="nav-monogram">M</div>
@@ -76,30 +76,27 @@
         </nav>
       </div>
 
-      <!-- Right Controls: Language, Notification, Theme -->
+      <!-- Right Controls: Language, Notification, Theme, Authentication -->
       <div class="nav-controls">
         <button id="lang-toggle-btn" class="btn btn-outline btn-sm" onclick="toggleLanguage()">
           [ EN | TH ]
         </button>
 
+        <!-- Notification Center -->
         <div style="position: relative;">
           <button id="notif-bell-btn" class="btn btn-outline btn-sm" onclick="toggleNotificationCenter()" title="Notifications">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
           </button>
 
-          <div id="notification-dropdown" class="box" style="position: absolute; right: 0; top: 2.75rem; width: 18rem; display: none; z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.25);">
+          <div id="notification-dropdown" class="box" style="position: absolute; right: 0; top: 2.75rem; width: 19rem; display: none; z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.25);">
             <div class="box-header" style="margin-bottom: 0.5rem; padding-bottom: 0.35rem;">
-              <span class="font-mono text-accent" style="font-size: 0.7rem; font-weight: 800;">NOTIFICATIONS</span>
-              <span class="font-mono text-muted" style="font-size: 0.65rem;">SYSTEM READY</span>
+              <span class="font-mono text-accent" style="font-size: 0.7rem; font-weight: 800;" data-i18n="notif_title">NOTIFICATIONS</span>
+              <span class="font-mono text-muted" style="font-size: 0.65rem;" data-i18n="notif_ready">SYSTEM READY</span>
             </div>
             <div style="font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.5rem;">
               <div style="border-left: 2px solid var(--accent); padding-left: 0.5rem;">
-                <strong>CS301 Algorithm Exam</strong>
-                <p class="text-muted" style="font-size: 0.65rem;">8 days remaining until examination.</p>
-              </div>
-              <div style="border-left: 2px solid var(--accent-amber); padding-left: 0.5rem;">
-                <strong>Local Storage Synced</strong>
-                <p class="text-muted" style="font-size: 0.65rem;">All work & study states persistent locally.</p>
+                <strong>MONOLITH CORE</strong>
+                <p class="text-muted" style="font-size: 0.65rem;" data-i18n="notif_storage_msg">Local storage synchronized in offline-first mode.</p>
               </div>
             </div>
           </div>
@@ -108,6 +105,13 @@
         <button id="theme-toggle-btn" class="btn btn-outline btn-sm" onclick="toggleTheme()" title="Toggle Earth-Tone Light/Dark Theme">
           LIGHT
         </button>
+
+        <!-- Login / Operator Container -->
+        <div id="auth-nav-container">
+          <button class="btn btn-outline btn-sm" onclick="openLoginModal()">
+            <span data-i18n="nav_signin">SIGN IN</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -120,7 +124,7 @@
          ==================================================================== -->
     <section id="view-home" class="view-panel active animate-arch-in">
       <!-- 1. Hero Banner -->
-      <div class="box box-surface" style="position: relative; text-align: center; padding: 4rem 1.5rem; margin-bottom: 2rem;">
+      <div class="box box-surface anim-stagger-1" style="position: relative; text-align: center; padding: 4rem 1.5rem; margin-bottom: 2rem;">
         <div class="corner-accent corner-tl"></div>
         <div class="corner-accent corner-tr"></div>
         <div class="corner-accent corner-bl"></div>
@@ -152,8 +156,8 @@
         </div>
       </div>
 
-      <!-- 2. Section I: Work Management -->
-      <div class="box" style="margin-bottom: 2rem;">
+      <!-- 2. Section I: Work Management Overview -->
+      <div class="box anim-stagger-2" style="margin-bottom: 2rem;">
         <div class="box-header">
           <div>
             <span class="font-mono text-muted" style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;" data-i18n="home_sec1_tag">MODULE I: WORKFLOW</span>
@@ -168,21 +172,21 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem;">
           <div class="box box-surface">
             <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec1_c1_title">4-STAGE KANBAN</h4>
-            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec1_c1_desc">Visual workflow pipeline with strictly 0px sharp rectilinear cards.</p>
+            <p class="text-muted font-sans" style="font-size: 0.75rem;" data-i18n="home_sec1_c1_desc">Visual workflow pipeline with strictly 0px sharp rectilinear cards.</p>
           </div>
           <div class="box box-surface">
             <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec1_c2_title">DEADLINE SPRINT</h4>
-            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec1_c2_desc">High-density overdue indicators and priority urgency tags.</p>
+            <p class="text-muted font-sans" style="font-size: 0.75rem;" data-i18n="home_sec1_c2_desc">High-density overdue indicators and priority urgency tags.</p>
           </div>
           <div class="box box-surface">
             <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec1_c3_title">ZERO LATENCY</h4>
-            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec1_c3_desc">Local-first caching architecture with 0ms instantaneous state synchronization.</p>
+            <p class="text-muted font-sans" style="font-size: 0.75rem;" data-i18n="home_sec1_c3_desc">Local-first caching architecture with 0ms instantaneous state synchronization.</p>
           </div>
         </div>
       </div>
 
-      <!-- 3. Section II: University Exam Hub -->
-      <div class="box" style="margin-bottom: 2rem;">
+      <!-- 3. Section II: University Exam Hub Overview -->
+      <div class="box anim-stagger-3" style="margin-bottom: 2rem;">
         <div class="box-header">
           <div>
             <span class="font-mono text-muted" style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;" data-i18n="home_sec2_tag">MODULE II: ACADEMIA</span>
@@ -197,25 +201,25 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem;">
           <div class="box box-surface">
             <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec2_c1_title">EXAM COUNTDOWN</h4>
-            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec2_c1_desc">Precision day and hour countdown timers for semester exams.</p>
+            <p class="text-muted font-sans" style="font-size: 0.75rem;" data-i18n="home_sec2_c1_desc">Precision day and hour countdown timers for semester exams.</p>
           </div>
           <div class="box box-surface">
             <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec2_c2_title">SYLLABUS CHECKLIST</h4>
-            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec2_c2_desc">Track subject topics with real-time percentage progress indicators.</p>
+            <p class="text-muted font-sans" style="font-size: 0.75rem;" data-i18n="home_sec2_c2_desc">Track subject topics with real-time percentage progress indicators.</p>
           </div>
           <div class="box box-surface">
             <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec2_c3_title">POMODORO FOCUS</h4>
-            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec2_c3_desc">25-minute deliberate work sprints with synthetic acoustic alerts.</p>
+            <p class="text-muted font-sans" style="font-size: 0.75rem;" data-i18n="home_sec2_c3_desc">25-minute deliberate work sprints with synthetic acoustic alerts.</p>
           </div>
           <div class="box box-surface">
             <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec2_c4_title">QUICK NOTES</h4>
-            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec2_c4_desc">Pinned reference scratchpad with sharp earth-tone contrast.</p>
+            <p class="text-muted font-sans" style="font-size: 0.75rem;" data-i18n="home_sec2_c4_desc">Pinned reference scratchpad with sharp earth-tone contrast.</p>
           </div>
         </div>
       </div>
 
       <!-- 4. Section III: 3-Step Execution Pipeline -->
-      <div class="box box-surface" style="padding: 2.5rem 1.5rem;">
+      <div class="box box-surface anim-stagger-4" style="padding: 2.5rem 1.5rem;">
         <div style="text-align: center; max-width: 36rem; margin: 0 auto 2rem;">
           <span class="font-mono text-accent" style="font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em;" data-i18n="home_sec3_tag">EXECUTION PIPELINE</span>
           <h3 class="font-mono" style="font-size: 1.5rem; font-weight: 800; margin-top: 0.25rem;" data-i18n="home_sec3_title">THREE-PHASE ARCHITECTURAL FLOW</h3>
@@ -242,11 +246,11 @@
     </section>
 
     <!-- ====================================================================
-         VIEW: WORK (KANBAN & LIST)
+         VIEW: WORK (USER'S PERSONAL KANBAN & LIST)
          ==================================================================== -->
     <section id="view-work" class="view-panel">
       <!-- Header & Metric Cards -->
-      <div class="box box-surface" style="margin-bottom: 1.5rem;">
+      <div class="box box-surface anim-stagger-1" style="margin-bottom: 1.5rem;">
         <div style="display: flex; flex-direction: column; md-flex-row; justify-content: space-between; align-items: flex-start; gap: 1rem;">
           <div>
             <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -262,19 +266,19 @@
             <!-- Metrics -->
             <div style="display: flex; gap: 0.5rem; font-family: var(--font-mono);">
               <div class="box" style="padding: 0.35rem 0.65rem; text-align: center;">
-                <span class="text-muted" style="font-size: 0.65rem; display: block;">TOTAL</span>
+                <span class="text-muted" style="font-size: 0.65rem; display: block;" data-i18n="work_metric_total">TOTAL</span>
                 <span id="work-metric-total" style="font-size: 0.95rem; font-weight: 800;">0</span>
               </div>
               <div class="box" style="padding: 0.35rem 0.65rem; text-align: center;">
-                <span class="text-muted" style="font-size: 0.65rem; display: block;">ACTIVE</span>
+                <span class="text-muted" style="font-size: 0.65rem; display: block;" data-i18n="work_metric_active">ACTIVE</span>
                 <span id="work-metric-active" class="text-accent" style="font-size: 0.95rem; font-weight: 800;">0</span>
               </div>
               <div class="box" style="padding: 0.35rem 0.65rem; text-align: center;">
-                <span class="text-muted" style="font-size: 0.65rem; display: block;">TODAY</span>
+                <span class="text-muted" style="font-size: 0.65rem; display: block;" data-i18n="work_metric_today">DUE TODAY</span>
                 <span id="work-metric-today" class="text-amber" style="font-size: 0.95rem; font-weight: 800;">0</span>
               </div>
               <div class="box" style="padding: 0.35rem 0.65rem; text-align: center;">
-                <span class="text-muted" style="font-size: 0.65rem; display: block;">OVERDUE</span>
+                <span class="text-muted" style="font-size: 0.65rem; display: block;" data-i18n="work_metric_overdue">OVERDUE</span>
                 <span id="work-metric-overdue" class="text-rust" style="font-size: 0.95rem; font-weight: 800;">0</span>
               </div>
             </div>
@@ -285,26 +289,29 @@
       </div>
 
       <!-- Filters & View Switcher -->
-      <div class="box box-surface" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1.5rem; padding: 0.75rem 1rem;">
+      <div class="box box-surface anim-stagger-2" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1.5rem; padding: 0.75rem 1rem;">
         <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1; max-width: 30rem;">
-          <input type="text" id="task-search-input" class="form-input" placeholder="Search tasks by title or tag..." style="padding: 0.4rem 0.65rem;" />
+          <input type="text" id="task-search-input" class="form-input" data-i18n-placeholder="work_search_placeholder" placeholder="Search tasks by title or description..." style="padding: 0.4rem 0.65rem;" />
           <select id="task-priority-filter" class="form-select" style="width: auto; padding: 0.4rem 0.65rem;">
-            <option value="ALL">ALL PRIORITIES</option>
-            <option value="URGENT">URGENT</option>
-            <option value="HIGH">HIGH</option>
-            <option value="MEDIUM">MEDIUM</option>
-            <option value="LOW">LOW</option>
+            <option value="ALL" data-i18n="work_filter_all">ALL PRIORITIES</option>
+            <option value="URGENT" data-i18n="work_filter_urgent">URGENT</option>
+            <option value="HIGH" data-i18n="work_filter_high">HIGH</option>
+            <option value="MEDIUM" data-i18n="work_filter_medium">MEDIUM</option>
+            <option value="LOW" data-i18n="work_filter_low">LOW</option>
           </select>
         </div>
 
         <div style="display: flex; align-items: center; gap: 0.25rem;">
-          <button id="view-mode-kanban-btn" class="btn btn-primary btn-sm">KANBAN</button>
-          <button id="view-mode-list-btn" class="btn btn-outline btn-sm">LIST VIEW</button>
+          <button id="view-mode-kanban-btn" class="btn btn-primary btn-sm" data-i18n="work_view_kanban">KANBAN</button>
+          <button id="view-mode-list-btn" class="btn btn-outline btn-sm" data-i18n="work_view_list">LIST VIEW</button>
         </div>
       </div>
 
-      <!-- Kanban Columns -->
-      <div id="work-kanban-board" class="kanban-grid">
+      <!-- Empty Workspace State (Shown when 0 tasks) -->
+      <div id="work-empty-state" style="display: none;"></div>
+
+      <!-- Active Kanban Columns -->
+      <div id="work-kanban-board" class="kanban-grid anim-stagger-3">
         <!-- Col: TODO -->
         <div class="kanban-column">
           <div class="kanban-col-header">
@@ -359,11 +366,11 @@
     </section>
 
     <!-- ====================================================================
-         VIEW: STUDY HUB
+         VIEW: STUDY HUB (USER'S PERSONAL EXAM HUB)
          ==================================================================== -->
     <section id="view-study" class="view-panel">
       <!-- Header -->
-      <div class="box box-surface" style="margin-bottom: 1.5rem;">
+      <div class="box box-surface anim-stagger-1" style="margin-bottom: 1.5rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
           <div>
             <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -379,34 +386,37 @@
         </div>
       </div>
 
+      <!-- Empty State for Exam Hub (Shown when 0 subjects) -->
+      <div id="study-empty-state" style="display: none;"></div>
+
       <!-- Subject Countdown Cards Grid -->
       <div id="study-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; margin-bottom: 1.5rem;"></div>
 
       <!-- Main Study Grid: Left Syllabus, Right Pomodoro & Notes -->
-      <div class="study-grid">
+      <div id="study-main-content" class="study-grid">
         <!-- Left: Syllabus Tracker -->
         <div id="study-syllabus-container"></div>
 
         <!-- Right: Pomodoro & Quick Notes -->
         <div>
           <!-- Pomodoro Timer Box -->
-          <div class="box box-surface">
+          <div class="box box-surface anim-stagger-2">
             <div class="box-header">
-              <span class="font-mono text-accent" style="font-size: 0.75rem; font-weight: 800;">POMODORO FOCUS TIMER</span>
-              <span class="font-mono text-muted" style="font-size: 0.7rem;">SESSIONS: <strong id="pomo-session-count">0</strong></span>
+              <span class="font-mono text-accent" style="font-size: 0.75rem; font-weight: 800;" data-i18n="study_pomo_title">POMODORO FOCUS TIMER</span>
+              <span class="font-mono text-muted" style="font-size: 0.7rem;"><span data-i18n="study_pomo_sessions">SESSIONS:</span> <strong id="pomo-session-count">0</strong></span>
             </div>
 
-            <div style="display: flex; justify-content: center; gap: 0.5rem;">
-              <button class="btn btn-primary btn-sm pomo-tab" data-mode="WORK" onclick="Pomodoro.setMode('WORK')">FOCUS (25M)</button>
-              <button class="btn btn-outline btn-sm pomo-tab" data-mode="SHORT" onclick="Pomodoro.setMode('SHORT')">SHORT (5M)</button>
-              <button class="btn btn-outline btn-sm pomo-tab" data-mode="LONG" onclick="Pomodoro.setMode('LONG')">LONG (15M)</button>
+            <div style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+              <button class="btn btn-primary btn-sm pomo-tab" data-mode="WORK" onclick="Pomodoro.setMode('WORK')" data-i18n="study_pomo_work">FOCUS (25M)</button>
+              <button class="btn btn-outline btn-sm pomo-tab" data-mode="SHORT" onclick="Pomodoro.setMode('SHORT')" data-i18n="study_pomo_short">SHORT (5M)</button>
+              <button class="btn btn-outline btn-sm pomo-tab" data-mode="LONG" onclick="Pomodoro.setMode('LONG')" data-i18n="study_pomo_long">LONG (15M)</button>
             </div>
 
             <div id="pomo-display" class="pomodoro-display">25:00</div>
 
             <div style="display: flex; justify-content: center; gap: 0.75rem;">
-              <button id="pomo-start-btn" class="btn btn-primary" style="min-width: 7rem;">START</button>
-              <button id="pomo-reset-btn" class="btn btn-outline">RESET</button>
+              <button id="pomo-start-btn" class="btn btn-primary" style="min-width: 7rem;" data-i18n="study_pomo_start">START</button>
+              <button id="pomo-reset-btn" class="btn btn-outline" data-i18n="study_pomo_reset">RESET</button>
             </div>
           </div>
 
@@ -417,10 +427,11 @@
     </section>
 
     <!-- ====================================================================
-         VIEW: DEMO SANDBOX
+         VIEW: DEMO SANDBOX (INTERACTIVE SIMULATION WITH SEPARATE DATA)
          ==================================================================== -->
     <section id="view-demo" class="view-panel">
-      <div class="box box-surface" style="margin-bottom: 1.5rem;">
+      <!-- Header -->
+      <div class="box box-surface anim-stagger-1" style="margin-bottom: 1.5rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
           <div>
             <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -432,42 +443,48 @@
             </p>
           </div>
 
-          <div style="display: flex; gap: 0.5rem;">
-            <button class="btn btn-outline" onclick="resetDemoData()">RESET SANDBOX</button>
-            <a href="#work" class="btn btn-primary">GO TO WORKSPACE</a>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-outline" onclick="resetDemoData()" data-i18n="demo_reset_btn">RESET DEMO DATA</button>
+            <a href="#work" class="btn btn-primary" data-i18n="demo_workspace_btn">GO TO MY CLEAN WORKSPACE</a>
           </div>
         </div>
       </div>
 
-      <!-- Guided Tutorial Highlights -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem;">
-        <div class="box" style="background: var(--bg);">
-          <span class="font-mono text-accent" style="font-weight: 800;">STEP 01 // KANBAN TRIAGE</span>
-          <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0;">Navigate to the <strong>WORK</strong> tab. Drag task cards between columns or use the dropdown selector to transition deliverables.</p>
-          <a href="#work" class="btn btn-outline btn-sm">EXPERIENCE KANBAN</a>
+      <!-- 3 Guided Tutorial Highlights -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+        <div class="box anim-stagger-2" style="background: var(--bg);">
+          <span class="font-mono text-accent" style="font-weight: 800;" data-i18n="demo_step1_title">STEP 01 // KANBAN TRIAGE</span>
+          <p class="text-muted font-sans" style="font-size: 0.8rem; margin: 0.5rem 0;" data-i18n="demo_step1_desc">
+            Drag tasks across columns or use the dropdown to shift between TODO, ACTIVE, REVIEW, and DONE.
+          </p>
         </div>
-        <div class="box" style="background: var(--bg);">
-          <span class="font-mono text-accent" style="font-weight: 800;">STEP 02 // EXAM CHECKLIST</span>
-          <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0;">Open <strong>EXAM HUB</strong>, select CS301, and check off syllabus topics to observe real-time readiness percentage recalculations.</p>
-          <a href="#study" class="btn btn-outline btn-sm">EXPLORE SYLLABUS</a>
+        <div class="box anim-stagger-3" style="background: var(--bg);">
+          <span class="font-mono text-accent" style="font-weight: 800;" data-i18n="demo_step2_title">STEP 02 // EXAM READINESS</span>
+          <p class="text-muted font-sans" style="font-size: 0.8rem; margin: 0.5rem 0;" data-i18n="demo_step2_desc">
+            Check off syllabus topics below to see the subject readiness percentage calculate automatically in real time.
+          </p>
         </div>
-        <div class="box" style="background: var(--bg);">
-          <span class="font-mono text-accent" style="font-weight: 800;">STEP 03 // 0MS INSTANT SPEED</span>
-          <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0;">Click between Work, Study, and Demo tabs. Notice the 0ms instantaneous route transitions with zero network waiting.</p>
-          <button class="btn btn-primary btn-sm" onclick="Router.navigate('work')">TEST 0MS TRANSITION</button>
+        <div class="box anim-stagger-4" style="background: var(--bg);">
+          <span class="font-mono text-accent" style="font-weight: 800;" data-i18n="demo_step3_title">STEP 03 // FOCUS INTERVAL</span>
+          <p class="text-muted font-sans" style="font-size: 0.8rem; margin: 0.5rem 0;" data-i18n="demo_step3_desc">
+            Hit START on the Pomodoro timer to test the acoustic notification chime and focus workflow.
+          </p>
         </div>
       </div>
+
+      <!-- Interactive Sandbox Containers (Kanban + Exam Hub with Demo Data) -->
+      <div id="demo-interactive-content"></div>
     </section>
 
   </main>
 
   <!-- ====================================================================
-       MODAL: TASK CREATE & EDIT
+       MODAL: TASK CREATE & EDIT (With Delete Button!)
        ==================================================================== -->
   <div id="task-modal" class="modal-overlay">
     <div class="modal-content">
       <div class="box-header">
-        <h3 id="task-modal-title" class="font-mono" style="font-size: 1rem; font-weight: 800;">CREATE TASK</h3>
+        <h3 id="task-modal-title" class="font-mono" style="font-size: 1rem; font-weight: 800;" data-i18n="modal_task_create">CREATE TASK</h3>
         <button class="btn btn-ghost btn-sm" onclick="closeTaskModal()" style="padding: 2px 6px;">[X]</button>
       </div>
 
@@ -475,45 +492,50 @@
         <input type="hidden" id="task-id-input" />
 
         <div class="form-group">
-          <label class="form-label" for="task-title-input">TASK TITLE *</label>
-          <input type="text" id="task-title-input" class="form-input" required placeholder="e.g. Complete Distributed Systems Term Paper" />
+          <label class="form-label" for="task-title-input" data-i18n="modal_task_title">TASK TITLE *</label>
+          <input type="text" id="task-title-input" class="form-input" required placeholder="e.g. Distributed Consensus Engine" />
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="task-desc-input">DESCRIPTION</label>
+          <label class="form-label" for="task-desc-input" data-i18n="modal_task_desc">DESCRIPTION</label>
           <textarea id="task-desc-input" class="form-textarea" rows="3" placeholder="Specific technical requirements or notes..."></textarea>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
           <div class="form-group">
-            <label class="form-label" for="task-priority-select">PRIORITY</label>
+            <label class="form-label" for="task-priority-select" data-i18n="modal_task_priority">PRIORITY</label>
             <select id="task-priority-select" class="form-select">
-              <option value="LOW">LOW</option>
-              <option value="MEDIUM" selected>MEDIUM</option>
-              <option value="HIGH">HIGH</option>
-              <option value="URGENT">URGENT</option>
+              <option value="LOW" data-i18n="work_filter_low">LOW</option>
+              <option value="MEDIUM" selected data-i18n="work_filter_medium">MEDIUM</option>
+              <option value="HIGH" data-i18n="work_filter_high">HIGH</option>
+              <option value="URGENT" data-i18n="work_filter_urgent">URGENT</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="task-status-select">INITIAL STATUS</label>
+            <label class="form-label" for="task-status-select" data-i18n="modal_task_status">STATUS</label>
             <select id="task-status-select" class="form-select">
-              <option value="TODO" selected>TODO</option>
-              <option value="IN_PROGRESS">IN PROGRESS</option>
-              <option value="REVIEW">REVIEW</option>
-              <option value="DONE">DONE</option>
+              <option value="TODO" selected data-i18n="status_todo">TODO</option>
+              <option value="IN_PROGRESS" data-i18n="status_in_progress">IN PROGRESS</option>
+              <option value="REVIEW" data-i18n="status_review">REVIEW</option>
+              <option value="DONE" data-i18n="status_done">DONE</option>
             </select>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="task-date-input">DUE DATE</label>
+          <label class="form-label" for="task-date-input" data-i18n="modal_task_due">DUE DATE</label>
           <input type="date" id="task-date-input" class="form-input" />
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
-          <button type="button" class="btn btn-outline" onclick="closeTaskModal()">CANCEL</button>
-          <button type="submit" class="btn btn-primary">SAVE TASK</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+          <button type="button" id="task-modal-delete-btn" class="btn btn-danger" onclick="handleModalDeleteCurrentTask()" style="display: none;" data-i18n="modal_task_delete">
+            DELETE TASK
+          </button>
+          <div style="display: flex; gap: 0.5rem; margin-left: auto;">
+            <button type="button" class="btn btn-outline" onclick="closeTaskModal()" data-i18n="modal_task_cancel">CANCEL</button>
+            <button type="submit" class="btn btn-primary" data-i18n="modal_task_save">SAVE TASK</button>
+          </div>
         </div>
       </form>
     </div>
@@ -525,36 +547,36 @@
   <div id="subject-modal" class="modal-overlay">
     <div class="modal-content">
       <div class="box-header">
-        <h3 class="font-mono" style="font-size: 1rem; font-weight: 800;">ADD EXAM SUBJECT</h3>
+        <h3 class="font-mono" style="font-size: 1rem; font-weight: 800;" data-i18n="modal_sub_create">ADD EXAM SUBJECT</h3>
         <button class="btn btn-ghost btn-sm" onclick="closeSubjectModal()" style="padding: 2px 6px;">[X]</button>
       </div>
 
       <form id="subject-form" onsubmit="handleSubjectFormSubmit(event)">
         <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0.75rem;">
           <div class="form-group">
-            <label class="form-label" for="sub-code-input">COURSE CODE *</label>
+            <label class="form-label" for="sub-code-input" data-i18n="modal_sub_code">COURSE CODE *</label>
             <input type="text" id="sub-code-input" class="form-input" required placeholder="CS301" />
           </div>
           <div class="form-group">
-            <label class="form-label" for="sub-title-input">COURSE TITLE *</label>
+            <label class="form-label" for="sub-title-input" data-i18n="modal_sub_title">COURSE TITLE *</label>
             <input type="text" id="sub-title-input" class="form-input" required placeholder="Distributed Algorithms" />
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 0.75rem;">
           <div class="form-group">
-            <label class="form-label" for="sub-date-input">EXAM DATE & TIME *</label>
+            <label class="form-label" for="sub-date-input" data-i18n="modal_sub_date">EXAM DATE & TIME *</label>
             <input type="datetime-local" id="sub-date-input" class="form-input" required />
           </div>
           <div class="form-group">
-            <label class="form-label" for="sub-room-input">ROOM / HALL</label>
+            <label class="form-label" for="sub-room-input" data-i18n="modal_sub_room">ROOM / HALL</label>
             <input type="text" id="sub-room-input" class="form-input" placeholder="ENG-B204" />
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
           <div class="form-group">
-            <label class="form-label" for="sub-grade-select">TARGET GRADE</label>
+            <label class="form-label" for="sub-grade-select" data-i18n="modal_sub_target">TARGET GRADE</label>
             <select id="sub-grade-select" class="form-select">
               <option value="A" selected>A</option>
               <option value="B+">B+</option>
@@ -564,19 +586,57 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" for="sub-priority-select">PRIORITY</label>
+            <label class="form-label" for="sub-priority-select" data-i18n="modal_sub_priority">PRIORITY</label>
             <select id="sub-priority-select" class="form-select">
-              <option value="LOW">LOW</option>
-              <option value="MEDIUM">MEDIUM</option>
-              <option value="HIGH" selected>HIGH</option>
-              <option value="URGENT">URGENT</option>
+              <option value="LOW" data-i18n="work_filter_low">LOW</option>
+              <option value="MEDIUM" data-i18n="work_filter_medium">MEDIUM</option>
+              <option value="HIGH" selected data-i18n="work_filter_high">HIGH</option>
+              <option value="URGENT" data-i18n="work_filter_urgent">URGENT</option>
             </select>
           </div>
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
-          <button type="button" class="btn btn-outline" onclick="closeSubjectModal()">CANCEL</button>
-          <button type="submit" class="btn btn-primary">CREATE SUBJECT</button>
+          <button type="button" class="btn btn-outline" onclick="closeSubjectModal()" data-i18n="modal_sub_cancel">CANCEL</button>
+          <button type="submit" class="btn btn-primary" data-i18n="modal_sub_save">CREATE SUBJECT</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: OPERATOR LOGIN & AUTHENTICATION
+       ==================================================================== -->
+  <div id="login-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="box-header">
+        <h3 class="font-mono" style="font-size: 1rem; font-weight: 800;" data-i18n="modal_login_title">OPERATOR ACCESS // SIGN IN</h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeLoginModal()" style="padding: 2px 6px;">[X]</button>
+      </div>
+
+      <p class="font-sans text-muted" style="font-size: 0.8rem; margin-bottom: 1.25rem;" data-i18n="modal_login_desc">
+        Sign in with your workspace credentials or authenticate as a Demo Operator.
+      </p>
+
+      <form id="login-form" onsubmit="handleLoginSubmit(event)">
+        <div class="form-group">
+          <label class="form-label" for="login-email-input" data-i18n="modal_login_email">EMAIL ADDRESS</label>
+          <input type="email" id="login-email-input" class="form-input" placeholder="operator@monolith.arch" value="operator@monolith.arch" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-pass-input" data-i18n="modal_login_pass">PASSWORD</label>
+          <input type="password" id="login-pass-input" class="form-input" placeholder="••••••••" value="monolith2026" required />
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
+          <button type="submit" class="btn btn-primary" style="width: 100%;" data-i18n="modal_login_btn">SIGN IN</button>
+          <button type="button" class="btn btn-outline" style="width: 100%;" onclick="handleQuickDemoLogin()" data-i18n="modal_login_demo">
+            QUICK DEMO OPERATOR ACCESS
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="closeLoginModal()" data-i18n="modal_login_close">
+            CANCEL
+          </button>
         </div>
       </form>
     </div>
