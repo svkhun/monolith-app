@@ -30,6 +30,14 @@ export const metadata: Metadata = {
   title: "MONOLITH // Work Management & University Exam Hub",
   description:
     "Classic earth-tone workspace engineered for professional project management and university examination readiness.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

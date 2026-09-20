@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Architectural Dark Earth Background -->
+  <rect width="32" height="32" fill="#1C1814" rx="0"/>
+  
+  <!-- Subtle Outer Precision Border -->
+  <rect x="1.5" y="1.5" width="29" height="29" fill="none" stroke="#D47739" stroke-width="1.5"/>
+  
+  <!-- Precision Corner Markers -->
+  <line x1="1.5" y1="1.5" x2="5" y2="1.5" stroke="#FBF8F3" stroke-width="1.5"/>
+  <line x1="1.5" y1="1.5" x2="1.5" y2="5" stroke="#FBF8F3" stroke-width="1.5"/>
+  <line x1="30.5" y1="1.5" x2="27" y2="1.5" stroke="#FBF8F3" stroke-width="1.5"/>
+  <line x1="30.5" y1="1.5" x2="30.5" y2="5" stroke="#FBF8F3" stroke-width="1.5"/>
+
+  <!-- Bold Geometric 'M' Monogram -->
+  <path d="M7 24 V8 H10.5 L16 16 L21.5 8 H25 V24 H21.5 V13.5 L16.8 20.5 H15.2 L10.5 13.5 V24 Z" fill="#FBF8F3"/>
+</svg>
