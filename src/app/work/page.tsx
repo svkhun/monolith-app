@@ -18,8 +18,10 @@ import {
 import { Briefcase, Plus, PlayCircle, Clock, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { isDueToday, isOverdue } from "@/lib/utils";
+import { useLanguage } from "@/components/layout/LanguageProvider";
 
 export default function WorkPage() {
+  const { t } = useLanguage();
   const [tasks, setTasks] = useState<TaskItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>("KANBAN");
@@ -163,46 +165,46 @@ export default function WorkPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-arch-in">
       {/* Page Header Strip */}
-      <div className="border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#141414] p-5">
+      <div className="border border-[#DDD4C5] dark:border-[#3B332B] bg-[#F3EDE4] dark:bg-[#201C18] p-5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center space-x-2">
-              <Briefcase className="w-5 h-5 text-neutral-900 dark:text-neutral-100" />
-              <h1 className="font-mono text-lg font-bold uppercase tracking-widest text-neutral-900 dark:text-neutral-100">
-                PROJECT WORKSPACE
+              <Briefcase className="w-5 h-5 text-[#BD682C]" />
+              <h1 className="font-mono text-lg font-bold uppercase tracking-widest text-[#26201A] dark:text-[#EFE8DC]">
+                {t("work_title")}
               </h1>
             </div>
-            <p className="font-mono text-sm text-neutral-500 mt-1">
-              High-throughput task dispatch, milestone deadlines, and status tracking.
+            <p className="font-mono text-sm text-[#786C60] dark:text-[#9C9082] mt-1">
+              {t("work_subtitle")}
             </p>
           </div>
 
           <div className="flex items-center gap-3">
             {tasks.length > 0 && (
               <div className="hidden sm:grid grid-cols-4 gap-2 font-mono">
-                <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-2.5 py-1">
-                  <span className="text-[10px] text-neutral-500 block">TOTAL</span>
-                  <span className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
+                <div className="border border-[#DDD4C5] dark:border-[#3B332B] bg-[#FBF8F3] dark:bg-[#161311] px-2.5 py-1">
+                  <span className="text-[10px] text-[#786C60] dark:text-[#9C9082] block">TOTAL</span>
+                  <span className="text-sm font-bold text-[#26201A] dark:text-[#EFE8DC]">
                     {metrics.total}
                   </span>
                 </div>
-                <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-2.5 py-1">
-                  <span className="text-[10px] text-neutral-500 block">ACTIVE</span>
-                  <span className="text-sm font-bold text-sky-600 dark:text-sky-400">
+                <div className="border border-[#DDD4C5] dark:border-[#3B332B] bg-[#FBF8F3] dark:bg-[#161311] px-2.5 py-1">
+                  <span className="text-[10px] text-[#786C60] dark:text-[#9C9082] block">ACTIVE</span>
+                  <span className="text-sm font-bold text-[#BD682C]">
                     {metrics.inProgress}
                   </span>
                 </div>
-                <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-2.5 py-1">
-                  <span className="text-[10px] text-neutral-500 block">TODAY</span>
-                  <span className="text-sm font-bold text-amber-600 dark:text-amber-400">
+                <div className="border border-[#DDD4C5] dark:border-[#3B332B] bg-[#FBF8F3] dark:bg-[#161311] px-2.5 py-1">
+                  <span className="text-[10px] text-[#786C60] dark:text-[#9C9082] block">TODAY</span>
+                  <span className="text-sm font-bold text-[#D48B38]">
                     {metrics.dueToday}
                   </span>
                 </div>
-                <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-2.5 py-1">
-                  <span className="text-[10px] text-neutral-500 block">OVERDUE</span>
-                  <span className="text-sm font-bold text-red-600 dark:text-red-400">
+                <div className="border border-[#DDD4C5] dark:border-[#3B332B] bg-[#FBF8F3] dark:bg-[#161311] px-2.5 py-1">
+                  <span className="text-[10px] text-[#786C60] dark:text-[#9C9082] block">OVERDUE</span>
+                  <span className="text-sm font-bold text-[#B5432D]">
                     {metrics.overdue}
                   </span>
                 </div>
@@ -215,7 +217,7 @@ export default function WorkPage() {
               className="flex items-center space-x-2"
             >
               <Plus className="w-4 h-4" />
-              <span>NEW TASK</span>
+              <span>{t("work_btn_new")}</span>
             </Button>
           </div>
         </div>

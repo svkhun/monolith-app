@@ -7,12 +7,15 @@ import { Briefcase, GraduationCap, PlayCircle, LogOut } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { ThemeToggle } from "./ThemeToggle";
 import { NotificationCenter } from "./NotificationCenter";
+import { LanguageToggle } from "./LanguageToggle";
+import { useLanguage } from "./LanguageProvider";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const { t } = useLanguage();
 
   const isWork = pathname === "/work";
   const isStudy = pathname === "/study";
@@ -35,7 +38,7 @@ export const Navbar: React.FC = () => {
                 MONOLITH
               </span>
               <span className="text-[10px] font-mono tracking-wider text-[#786C60] dark:text-[#9C9082] uppercase -mt-0.5">
-                WORKSPACE & EXAM HUB
+                {t("home_brand_sub")}
               </span>
             </div>
           </Link>
@@ -44,6 +47,7 @@ export const Navbar: React.FC = () => {
           <nav className="flex items-center border border-[#DDD4C5] dark:border-[#3B332B] p-0.5 bg-[#F3EDE4] dark:bg-[#201C18]">
             <Link
               href="/work"
+              prefetch={true}
               className={cn(
                 "flex items-center space-x-2 px-3 py-1.5 font-mono text-xs uppercase tracking-wider font-semibold transition-all select-none",
                 isWork
@@ -52,11 +56,12 @@ export const Navbar: React.FC = () => {
               )}
             >
               <Briefcase className="w-4 h-4 text-[#BD682C]" />
-              <span>WORK</span>
+              <span>{t("nav_work")}</span>
             </Link>
 
             <Link
               href="/study"
+              prefetch={true}
               className={cn(
                 "flex items-center space-x-2 px-3 py-1.5 font-mono text-xs uppercase tracking-wider font-semibold transition-all select-none",
                 isStudy
@@ -65,11 +70,12 @@ export const Navbar: React.FC = () => {
               )}
             >
               <GraduationCap className="w-4 h-4 text-[#BD682C]" />
-              <span>EXAM HUB</span>
+              <span>{t("nav_study")}</span>
             </Link>
 
             <Link
               href="/demo"
+              prefetch={true}
               className={cn(
                 "flex items-center space-x-2 px-3 py-1.5 font-mono text-xs uppercase tracking-wider font-semibold transition-all select-none",
                 isDemo
@@ -78,13 +84,14 @@ export const Navbar: React.FC = () => {
               )}
             >
               <PlayCircle className="w-4 h-4 text-[#BD682C]" />
-              <span>TUTORIAL</span>
+              <span>{t("nav_tutorial")}</span>
             </Link>
           </nav>
         </div>
 
-        {/* Right Controls: Notification Envelope, Theme Toggle & Session */}
-        <div className="flex items-center space-x-2.5">
+        {/* Right Controls: Language Toggle, Notification Envelope, Theme Toggle & Session */}
+        <div className="flex items-center space-x-2 sm:space-x-2.5">
+          <LanguageToggle />
           <NotificationCenter />
           <ThemeToggle />
 
@@ -110,13 +117,13 @@ export const Navbar: React.FC = () => {
             </div>
           ) : (
             <div className="flex items-center space-x-2">
-              <Link href="/login">
+              <Link href="/login" prefetch={true}>
                 <Button
                   variant="outline"
                   size="sm"
                   className="border-[#DDD4C5] dark:border-[#3B332B] hover:bg-[#EBE3D7] dark:hover:bg-[#2A2520]"
                 >
-                  SIGN IN
+                  {t("nav_signin")}
                 </Button>
               </Link>
             </div>

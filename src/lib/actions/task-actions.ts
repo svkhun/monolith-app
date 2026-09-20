@@ -12,13 +12,24 @@ async function getUserId(): Promise<string> {
   return (session?.user as any)?.id || "demo-user-id";
 }
 
+async function withTimeout<T>(promise: Promise<T>, ms: number, fallback: T): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((resolve) => setTimeout(() => resolve(fallback), ms)),
+  ]);
+}
+
 export async function getTasks() {
-  const userId = await getUserId();
   try {
-    const tasks = await db.task.findMany({
-      where: { userId },
-      orderBy: [{ orderIndex: "asc" }, { createdAt: "desc" }],
-    });
+    const userId = await withTimeout(getUserId(), 1000, "demo-user-id");
+    const tasks = await withTimeout(
+      db.task.findMany({
+        where: { userId },
+        orderBy: [{ orderIndex: "asc" }, { createdAt: "desc" }],
+      }),
+      1500,
+      []
+    );
     return {
       success: true,
       tasks: tasks.map((t) => ({

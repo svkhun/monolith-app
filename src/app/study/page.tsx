@@ -24,8 +24,10 @@ import {
 } from "@/lib/actions/note-actions";
 import { GraduationCap, Plus, PlayCircle, BookOpen, Clock } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { useLanguage } from "@/components/layout/LanguageProvider";
 
 export default function StudyPage() {
+  const { t } = useLanguage();
   const [subjects, setSubjects] = useState<ExamSubjectItem[]>([]);
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
   const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
@@ -215,19 +217,19 @@ export default function StudyPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-arch-in">
       {/* Header Strip */}
-      <div className="border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#141414] p-5">
+      <div className="border border-[#DDD4C5] dark:border-[#3B332B] bg-[#F3EDE4] dark:bg-[#201C18] p-5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center space-x-2">
-              <GraduationCap className="w-5 h-5 text-neutral-900 dark:text-neutral-100" />
-              <h1 className="font-mono text-lg font-bold uppercase tracking-widest text-neutral-900 dark:text-neutral-100">
-                UNIVERSITY EXAM PREPARATION HUB
+              <GraduationCap className="w-5 h-5 text-[#BD682C]" />
+              <h1 className="font-mono text-lg font-bold uppercase tracking-widest text-[#26201A] dark:text-[#EFE8DC]">
+                {t("study_title")}
               </h1>
             </div>
-            <p className="font-mono text-sm text-neutral-500 mt-1">
-              Chronological countdowns, syllabus checklists, focus pomodoro logging, and cheat-sheet formulas.
+            <p className="font-mono text-sm text-[#786C60] dark:text-[#9C9082] mt-1">
+              {t("study_subtitle")}
             </p>
           </div>
 
@@ -238,7 +240,7 @@ export default function StudyPage() {
             className="flex items-center space-x-2"
           >
             <Plus className="w-4 h-4" />
-            <span>REGISTER EXAM</span>
+            <span>{t("study_btn_register")}</span>
           </Button>
         </div>
       </div>
