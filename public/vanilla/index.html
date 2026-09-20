@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MONOLITH // Work Management & University Exam Hub</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Top Navigation Progress Indicator -->
+  <div id="nav-progress">
+    <div id="nav-progress-bar"></div>
+  </div>
+
+  <!-- Startup Loader Sequence (Skippable on click or keydown) -->
+  <div id="startup-loader" title="Click anywhere to enter immediately">
+    <div class="loader-card animate-arch-in">
+      <div class="corner-accent corner-tl"></div>
+      <div class="corner-accent corner-tr"></div>
+      <div class="corner-accent corner-bl"></div>
+      <div class="corner-accent corner-br"></div>
+
+      <div class="loader-monogram">M</div>
+
+      <div style="text-align: center;">
+        <h2 class="font-mono" style="font-size: 1rem; font-weight: 900; letter-spacing: 0.28em; text-transform: uppercase;">MONOLITH</h2>
+        <p id="loader-status" class="font-mono text-accent" style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; margin-top: 0.25rem;">
+          CALIBRATING ARCHITECTURE...
+        </p>
+      </div>
+
+      <div style="width: 100%;">
+        <div class="loader-progress-track">
+          <div id="loader-fill" class="loader-progress-fill"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); margin-top: 0.35rem;">
+          <span>INITIALIZING ENGINE</span>
+          <span id="loader-percent" style="font-weight: 700; color: var(--text);">15%</span>
+        </div>
+      </div>
+
+      <div class="font-mono text-muted" style="font-size: 0.6rem; letter-spacing: 0.1em; text-align: center;">
+        [ CLICK ANYWHERE TO ENTER / คลิกที่ใดก็ได้เพื่อเข้าสู่ระบบ ]
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Navigation Bar -->
+  <header class="top-nav-bar">
+    <div class="top-nav-inner">
+      <!-- Left: Logo & Navigation Tabs -->
+      <div style="display: flex; align-items: center; gap: 1.5rem;">
+        <a href="#home" class="nav-brand">
+          <div class="nav-monogram">M</div>
+          <div style="display: flex; flex-direction: column;">
+            <span class="font-mono" style="font-size: 0.9rem; font-weight: 900; letter-spacing: 0.2em;">MONOLITH</span>
+            <span class="font-mono text-muted" style="font-size: 0.65rem; letter-spacing: 0.05em;" data-i18n="brand_sub">ARCHITECTURAL WORKSPACE</span>
+          </div>
+        </a>
+
+        <nav class="nav-links">
+          <a href="#work" class="nav-link" data-view="work">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="0"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <span data-i18n="nav_work">WORK</span>
+          </a>
+          <a href="#study" class="nav-link" data-view="study">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            <span data-i18n="nav_study">EXAM HUB</span>
+          </a>
+          <a href="#demo" class="nav-link" data-view="demo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+            <span data-i18n="nav_tutorial">DEMO</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Right Controls: Language, Notification, Theme -->
+      <div class="nav-controls">
+        <button id="lang-toggle-btn" class="btn btn-outline btn-sm" onclick="toggleLanguage()">
+          [ EN | TH ]
+        </button>
+
+        <div style="position: relative;">
+          <button id="notif-bell-btn" class="btn btn-outline btn-sm" onclick="toggleNotificationCenter()" title="Notifications">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </button>
+
+          <div id="notification-dropdown" class="box" style="position: absolute; right: 0; top: 2.75rem; width: 18rem; display: none; z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.25);">
+            <div class="box-header" style="margin-bottom: 0.5rem; padding-bottom: 0.35rem;">
+              <span class="font-mono text-accent" style="font-size: 0.7rem; font-weight: 800;">NOTIFICATIONS</span>
+              <span class="font-mono text-muted" style="font-size: 0.65rem;">SYSTEM READY</span>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.7rem; display: flex; flex-direction: column; gap: 0.5rem;">
+              <div style="border-left: 2px solid var(--accent); padding-left: 0.5rem;">
+                <strong>CS301 Algorithm Exam</strong>
+                <p class="text-muted" style="font-size: 0.65rem;">8 days remaining until examination.</p>
+              </div>
+              <div style="border-left: 2px solid var(--accent-amber); padding-left: 0.5rem;">
+                <strong>Local Storage Synced</strong>
+                <p class="text-muted" style="font-size: 0.65rem;">All work & study states persistent locally.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button id="theme-toggle-btn" class="btn btn-outline btn-sm" onclick="toggleTheme()" title="Toggle Earth-Tone Light/Dark Theme">
+          LIGHT
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Router Container -->
+  <main class="main-content">
+
+    <!-- ====================================================================
+         VIEW: HOME
+         ==================================================================== -->
+    <section id="view-home" class="view-panel active animate-arch-in">
+      <!-- 1. Hero Banner -->
+      <div class="box box-surface" style="position: relative; text-align: center; padding: 4rem 1.5rem; margin-bottom: 2rem;">
+        <div class="corner-accent corner-tl"></div>
+        <div class="corner-accent corner-tr"></div>
+        <div class="corner-accent corner-bl"></div>
+        <div class="corner-accent corner-br"></div>
+
+        <div style="max-width: 48rem; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+          <div class="loader-monogram" style="width: 3.5rem; height: 3.5rem; font-size: 1.75rem;">M</div>
+
+          <div>
+            <h1 class="font-mono" style="font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text);">
+              MONOLITH
+            </h1>
+            <div style="width: 4rem; height: 2px; background: var(--accent); margin: 0.75rem auto;"></div>
+            <p class="font-mono text-muted" style="font-size: 0.9rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;">
+              <span data-i18n="home_quote_1">STOP ORGANIZING.</span> <span data-i18n="home_quote_2">START EXECUTING.</span>
+            </p>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1rem;">
+            <a href="#work" class="btn btn-primary btn-lg" style="min-width: 14rem;">
+              <span data-i18n="home_cta_open">OPEN WORKSPACE</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <a href="#demo" class="btn btn-outline btn-lg" style="min-width: 12rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-accent"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+              <span data-i18n="home_cta_demo">EXPLORE DEMO</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Section I: Work Management -->
+      <div class="box" style="margin-bottom: 2rem;">
+        <div class="box-header">
+          <div>
+            <span class="font-mono text-muted" style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;" data-i18n="home_sec1_tag">MODULE I: WORKFLOW</span>
+            <h3 class="font-mono" style="font-size: 1.25rem; font-weight: 800;" data-i18n="home_sec1_title">WORK MANAGEMENT</h3>
+          </div>
+          <a href="#work" class="btn btn-outline btn-sm">
+            <span data-i18n="home_sec1_btn">LAUNCH KANBAN</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem;">
+          <div class="box box-surface">
+            <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec1_c1_title">4-STAGE KANBAN</h4>
+            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec1_c1_desc">Visual workflow pipeline with strictly 0px sharp rectilinear cards.</p>
+          </div>
+          <div class="box box-surface">
+            <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec1_c2_title">DEADLINE SPRINT</h4>
+            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec1_c2_desc">High-density overdue indicators and priority urgency tags.</p>
+          </div>
+          <div class="box box-surface">
+            <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec1_c3_title">ZERO LATENCY</h4>
+            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec1_c3_desc">Local-first caching architecture with 0ms instantaneous state synchronization.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Section II: University Exam Hub -->
+      <div class="box" style="margin-bottom: 2rem;">
+        <div class="box-header">
+          <div>
+            <span class="font-mono text-muted" style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;" data-i18n="home_sec2_tag">MODULE II: ACADEMIA</span>
+            <h3 class="font-mono" style="font-size: 1.25rem; font-weight: 800;" data-i18n="home_sec2_title">UNIVERSITY EXAM HUB</h3>
+          </div>
+          <a href="#study" class="btn btn-outline btn-sm">
+            <span data-i18n="home_sec2_btn">ENTER EXAM HUB</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem;">
+          <div class="box box-surface">
+            <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec2_c1_title">EXAM COUNTDOWN</h4>
+            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec2_c1_desc">Precision day and hour countdown timers for semester exams.</p>
+          </div>
+          <div class="box box-surface">
+            <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec2_c2_title">SYLLABUS CHECKLIST</h4>
+            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec2_c2_desc">Track subject topics with real-time percentage progress indicators.</p>
+          </div>
+          <div class="box box-surface">
+            <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec2_c3_title">POMODORO FOCUS</h4>
+            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec2_c3_desc">25-minute deliberate work sprints with synthetic acoustic alerts.</p>
+          </div>
+          <div class="box box-surface">
+            <h4 class="font-mono text-accent" style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="home_sec2_c4_title">QUICK NOTES</h4>
+            <p class="text-muted" style="font-size: 0.75rem;" data-i18n="home_sec2_c4_desc">Pinned reference scratchpad with sharp earth-tone contrast.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Section III: 3-Step Execution Pipeline -->
+      <div class="box box-surface" style="padding: 2.5rem 1.5rem;">
+        <div style="text-align: center; max-width: 36rem; margin: 0 auto 2rem;">
+          <span class="font-mono text-accent" style="font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em;" data-i18n="home_sec3_tag">EXECUTION PIPELINE</span>
+          <h3 class="font-mono" style="font-size: 1.5rem; font-weight: 800; margin-top: 0.25rem;" data-i18n="home_sec3_title">THREE-PHASE ARCHITECTURAL FLOW</h3>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; font-family: var(--font-mono);">
+          <div class="box" style="background: var(--bg);">
+            <span class="text-accent" style="font-size: 1.5rem; font-weight: 900;">01</span>
+            <h4 style="font-size: 0.9rem; font-weight: 800; margin: 0.5rem 0;" data-i18n="home_sec3_s1_title">STRUCTURE OBJECTIVES</h4>
+            <p class="text-muted font-sans" style="font-size: 0.75rem;" data-i18n="home_sec3_s1_desc">Capture coursework assignments and project deliverables into sharp cards.</p>
+          </div>
+          <div class="box" style="background: var(--bg);">
+            <span class="text-accent" style="font-size: 1.5rem; font-weight: 900;">02</span>
+            <h4 style="font-size: 0.9rem; font-weight: 800; margin: 0.5rem 0;" data-i18n="home_sec3_s2_title">SYSTEMATIC STUDY</h4>
+            <p class="text-muted font-sans" style="font-size: 0.75rem;" data-i18n="home_sec3_s2_desc">Run timed Pomodoro sprints and check off syllabus topics steadily.</p>
+          </div>
+          <div class="box" style="background: var(--bg);">
+            <span class="text-accent" style="font-size: 1.5rem; font-weight: 900;">03</span>
+            <h4 style="font-size: 0.9rem; font-weight: 800; margin: 0.5rem 0;" data-i18n="home_sec3_s3_title">COMMAND THE SEMESTER</h4>
+            <p class="text-muted font-sans" style="font-size: 0.75rem;" data-i18n="home_sec3_s3_desc">Attain high-precision clarity and complete every exam with zero panic.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW: WORK (KANBAN & LIST)
+         ==================================================================== -->
+    <section id="view-work" class="view-panel">
+      <!-- Header & Metric Cards -->
+      <div class="box box-surface" style="margin-bottom: 1.5rem;">
+        <div style="display: flex; flex-direction: column; md-flex-row; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-accent"><rect x="2" y="7" width="20" height="14" rx="0"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              <h1 class="font-mono" style="font-size: 1.25rem; font-weight: 900;" data-i18n="work_title">WORK MANAGEMENT</h1>
+            </div>
+            <p class="font-mono text-muted" style="font-size: 0.75rem; margin-top: 0.25rem;" data-i18n="work_subtitle">
+              RECTILINEAR KANBAN & SPRINT TASK ENGINE
+            </p>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <!-- Metrics -->
+            <div style="display: flex; gap: 0.5rem; font-family: var(--font-mono);">
+              <div class="box" style="padding: 0.35rem 0.65rem; text-align: center;">
+                <span class="text-muted" style="font-size: 0.65rem; display: block;">TOTAL</span>
+                <span id="work-metric-total" style="font-size: 0.95rem; font-weight: 800;">0</span>
+              </div>
+              <div class="box" style="padding: 0.35rem 0.65rem; text-align: center;">
+                <span class="text-muted" style="font-size: 0.65rem; display: block;">ACTIVE</span>
+                <span id="work-metric-active" class="text-accent" style="font-size: 0.95rem; font-weight: 800;">0</span>
+              </div>
+              <div class="box" style="padding: 0.35rem 0.65rem; text-align: center;">
+                <span class="text-muted" style="font-size: 0.65rem; display: block;">TODAY</span>
+                <span id="work-metric-today" class="text-amber" style="font-size: 0.95rem; font-weight: 800;">0</span>
+              </div>
+              <div class="box" style="padding: 0.35rem 0.65rem; text-align: center;">
+                <span class="text-muted" style="font-size: 0.65rem; display: block;">OVERDUE</span>
+                <span id="work-metric-overdue" class="text-rust" style="font-size: 0.95rem; font-weight: 800;">0</span>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="openNewTaskModal('TODO')" data-i18n="work_btn_new">+ CREATE TASK</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & View Switcher -->
+      <div class="box box-surface" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1.5rem; padding: 0.75rem 1rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1; max-width: 30rem;">
+          <input type="text" id="task-search-input" class="form-input" placeholder="Search tasks by title or tag..." style="padding: 0.4rem 0.65rem;" />
+          <select id="task-priority-filter" class="form-select" style="width: auto; padding: 0.4rem 0.65rem;">
+            <option value="ALL">ALL PRIORITIES</option>
+            <option value="URGENT">URGENT</option>
+            <option value="HIGH">HIGH</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="LOW">LOW</option>
+          </select>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.25rem;">
+          <button id="view-mode-kanban-btn" class="btn btn-primary btn-sm">KANBAN</button>
+          <button id="view-mode-list-btn" class="btn btn-outline btn-sm">LIST VIEW</button>
+        </div>
+      </div>
+
+      <!-- Kanban Columns -->
+      <div id="work-kanban-board" class="kanban-grid">
+        <!-- Col: TODO -->
+        <div class="kanban-column">
+          <div class="kanban-col-header">
+            <span class="font-mono" style="font-size: 0.75rem; font-weight: 800;" data-i18n="status_todo">TODO</span>
+            <span id="kanban-count-TODO" class="badge">0</span>
+          </div>
+          <div id="kanban-cards-TODO" class="kanban-cards-container" data-status="TODO"></div>
+          <div style="padding: 0.5rem; border-top: 1px solid var(--border);">
+            <button class="btn btn-ghost btn-sm" style="width: 100%;" onclick="openNewTaskModal('TODO')">+ ADD ITEM</button>
+          </div>
+        </div>
+
+        <!-- Col: IN_PROGRESS -->
+        <div class="kanban-column">
+          <div class="kanban-col-header">
+            <span class="font-mono text-accent" style="font-size: 0.75rem; font-weight: 800;" data-i18n="status_in_progress">IN PROGRESS</span>
+            <span id="kanban-count-IN_PROGRESS" class="badge">0</span>
+          </div>
+          <div id="kanban-cards-IN_PROGRESS" class="kanban-cards-container" data-status="IN_PROGRESS"></div>
+          <div style="padding: 0.5rem; border-top: 1px solid var(--border);">
+            <button class="btn btn-ghost btn-sm" style="width: 100%;" onclick="openNewTaskModal('IN_PROGRESS')">+ ADD ITEM</button>
+          </div>
+        </div>
+
+        <!-- Col: REVIEW -->
+        <div class="kanban-column">
+          <div class="kanban-col-header">
+            <span class="font-mono text-amber" style="font-size: 0.75rem; font-weight: 800;" data-i18n="status_review">REVIEW</span>
+            <span id="kanban-count-REVIEW" class="badge">0</span>
+          </div>
+          <div id="kanban-cards-REVIEW" class="kanban-cards-container" data-status="REVIEW"></div>
+          <div style="padding: 0.5rem; border-top: 1px solid var(--border);">
+            <button class="btn btn-ghost btn-sm" style="width: 100%;" onclick="openNewTaskModal('REVIEW')">+ ADD ITEM</button>
+          </div>
+        </div>
+
+        <!-- Col: DONE -->
+        <div class="kanban-column">
+          <div class="kanban-col-header">
+            <span class="font-mono text-olive" style="font-size: 0.75rem; font-weight: 800;" data-i18n="status_done">DONE</span>
+            <span id="kanban-count-DONE" class="badge">0</span>
+          </div>
+          <div id="kanban-cards-DONE" class="kanban-cards-container" data-status="DONE"></div>
+          <div style="padding: 0.5rem; border-top: 1px solid var(--border);">
+            <button class="btn btn-ghost btn-sm" style="width: 100%;" onclick="openNewTaskModal('DONE')">+ ADD ITEM</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabular List Container (Toggled via button) -->
+      <div id="work-list-container" style="display: none;"></div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW: STUDY HUB
+         ==================================================================== -->
+    <section id="view-study" class="view-panel">
+      <!-- Header -->
+      <div class="box box-surface" style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-accent"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              <h1 class="font-mono" style="font-size: 1.25rem; font-weight: 900;" data-i18n="study_title">UNIVERSITY EXAM HUB</h1>
+            </div>
+            <p class="font-mono text-muted" style="font-size: 0.75rem; margin-top: 0.25rem;" data-i18n="study_subtitle">
+              COUNTDOWNS, SYLLABUS CHECKLISTS & POMODORO TIMER
+            </p>
+          </div>
+
+          <button class="btn btn-primary" onclick="openNewSubjectModal()" data-i18n="study_btn_new">+ ADD SUBJECT</button>
+        </div>
+      </div>
+
+      <!-- Subject Countdown Cards Grid -->
+      <div id="study-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; margin-bottom: 1.5rem;"></div>
+
+      <!-- Main Study Grid: Left Syllabus, Right Pomodoro & Notes -->
+      <div class="study-grid">
+        <!-- Left: Syllabus Tracker -->
+        <div id="study-syllabus-container"></div>
+
+        <!-- Right: Pomodoro & Quick Notes -->
+        <div>
+          <!-- Pomodoro Timer Box -->
+          <div class="box box-surface">
+            <div class="box-header">
+              <span class="font-mono text-accent" style="font-size: 0.75rem; font-weight: 800;">POMODORO FOCUS TIMER</span>
+              <span class="font-mono text-muted" style="font-size: 0.7rem;">SESSIONS: <strong id="pomo-session-count">0</strong></span>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 0.5rem;">
+              <button class="btn btn-primary btn-sm pomo-tab" data-mode="WORK" onclick="Pomodoro.setMode('WORK')">FOCUS (25M)</button>
+              <button class="btn btn-outline btn-sm pomo-tab" data-mode="SHORT" onclick="Pomodoro.setMode('SHORT')">SHORT (5M)</button>
+              <button class="btn btn-outline btn-sm pomo-tab" data-mode="LONG" onclick="Pomodoro.setMode('LONG')">LONG (15M)</button>
+            </div>
+
+            <div id="pomo-display" class="pomodoro-display">25:00</div>
+
+            <div style="display: flex; justify-content: center; gap: 0.75rem;">
+              <button id="pomo-start-btn" class="btn btn-primary" style="min-width: 7rem;">START</button>
+              <button id="pomo-reset-btn" class="btn btn-outline">RESET</button>
+            </div>
+          </div>
+
+          <!-- Quick Notes Board -->
+          <div id="study-notes-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW: DEMO SANDBOX
+         ==================================================================== -->
+    <section id="view-demo" class="view-panel">
+      <div class="box box-surface" style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-accent"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+              <h1 class="font-mono" style="font-size: 1.25rem; font-weight: 900;" data-i18n="demo_title">INTERACTIVE DEMO SANDBOX</h1>
+            </div>
+            <p class="font-mono text-muted" style="font-size: 0.75rem; margin-top: 0.25rem;" data-i18n="demo_subtitle">
+              EXPERIENCE THE FULL MONOLITH WORKSPACE WITH SIMULATION DATA
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-outline" onclick="resetDemoData()">RESET SANDBOX</button>
+            <a href="#work" class="btn btn-primary">GO TO WORKSPACE</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guided Tutorial Highlights -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem;">
+        <div class="box" style="background: var(--bg);">
+          <span class="font-mono text-accent" style="font-weight: 800;">STEP 01 // KANBAN TRIAGE</span>
+          <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0;">Navigate to the <strong>WORK</strong> tab. Drag task cards between columns or use the dropdown selector to transition deliverables.</p>
+          <a href="#work" class="btn btn-outline btn-sm">EXPERIENCE KANBAN</a>
+        </div>
+        <div class="box" style="background: var(--bg);">
+          <span class="font-mono text-accent" style="font-weight: 800;">STEP 02 // EXAM CHECKLIST</span>
+          <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0;">Open <strong>EXAM HUB</strong>, select CS301, and check off syllabus topics to observe real-time readiness percentage recalculations.</p>
+          <a href="#study" class="btn btn-outline btn-sm">EXPLORE SYLLABUS</a>
+        </div>
+        <div class="box" style="background: var(--bg);">
+          <span class="font-mono text-accent" style="font-weight: 800;">STEP 03 // 0MS INSTANT SPEED</span>
+          <p class="text-muted" style="font-size: 0.8rem; margin: 0.5rem 0;">Click between Work, Study, and Demo tabs. Notice the 0ms instantaneous route transitions with zero network waiting.</p>
+          <button class="btn btn-primary btn-sm" onclick="Router.navigate('work')">TEST 0MS TRANSITION</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====================================================================
+       MODAL: TASK CREATE & EDIT
+       ==================================================================== -->
+  <div id="task-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="box-header">
+        <h3 id="task-modal-title" class="font-mono" style="font-size: 1rem; font-weight: 800;">CREATE TASK</h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeTaskModal()" style="padding: 2px 6px;">[X]</button>
+      </div>
+
+      <form id="task-form" onsubmit="handleTaskFormSubmit(event)">
+        <input type="hidden" id="task-id-input" />
+
+        <div class="form-group">
+          <label class="form-label" for="task-title-input">TASK TITLE *</label>
+          <input type="text" id="task-title-input" class="form-input" required placeholder="e.g. Complete Distributed Systems Term Paper" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="task-desc-input">DESCRIPTION</label>
+          <textarea id="task-desc-input" class="form-textarea" rows="3" placeholder="Specific technical requirements or notes..."></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label" for="task-priority-select">PRIORITY</label>
+            <select id="task-priority-select" class="form-select">
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM" selected>MEDIUM</option>
+              <option value="HIGH">HIGH</option>
+              <option value="URGENT">URGENT</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="task-status-select">INITIAL STATUS</label>
+            <select id="task-status-select" class="form-select">
+              <option value="TODO" selected>TODO</option>
+              <option value="IN_PROGRESS">IN PROGRESS</option>
+              <option value="REVIEW">REVIEW</option>
+              <option value="DONE">DONE</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="task-date-input">DUE DATE</label>
+          <input type="date" id="task-date-input" class="form-input" />
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-outline" onclick="closeTaskModal()">CANCEL</button>
+          <button type="submit" class="btn btn-primary">SAVE TASK</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL: SUBJECT CREATE
+       ==================================================================== -->
+  <div id="subject-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="box-header">
+        <h3 class="font-mono" style="font-size: 1rem; font-weight: 800;">ADD EXAM SUBJECT</h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeSubjectModal()" style="padding: 2px 6px;">[X]</button>
+      </div>
+
+      <form id="subject-form" onsubmit="handleSubjectFormSubmit(event)">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label" for="sub-code-input">COURSE CODE *</label>
+            <input type="text" id="sub-code-input" class="form-input" required placeholder="CS301" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sub-title-input">COURSE TITLE *</label>
+            <input type="text" id="sub-title-input" class="form-input" required placeholder="Distributed Algorithms" />
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label" for="sub-date-input">EXAM DATE & TIME *</label>
+            <input type="datetime-local" id="sub-date-input" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sub-room-input">ROOM / HALL</label>
+            <input type="text" id="sub-room-input" class="form-input" placeholder="ENG-B204" />
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div class="form-group">
+            <label class="form-label" for="sub-grade-select">TARGET GRADE</label>
+            <select id="sub-grade-select" class="form-select">
+              <option value="A" selected>A</option>
+              <option value="B+">B+</option>
+              <option value="B">B</option>
+              <option value="C+">C+</option>
+              <option value="C">C</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sub-priority-select">PRIORITY</label>
+            <select id="sub-priority-select" class="form-select">
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="HIGH" selected>HIGH</option>
+              <option value="URGENT">URGENT</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-outline" onclick="closeSubjectModal()">CANCEL</button>
+          <button type="submit" class="btn btn-primary">CREATE SUBJECT</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    MONOLITH CORE // ARCHITECTURAL FORM FACTOR // EST. 2026
+  </footer>
+
+</body>
+</html>

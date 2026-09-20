@@ -1,0 +1,654 @@
+/* ==========================================================================
+   MONOLITH VANILLA DESIGN SYSTEM
+   Form Factor: Strict 90-Degree Rectilinear / 0px Border Radius
+   Palette: Classic Earth-Tone (Parchment, Walnut, Charred Umber, Terracotta)
+   Typography: Inter, JetBrains Mono, Noto Sans Thai (Sans-Serif)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Earth-Tone Light Palette (Antique Parchment & Warm Sand) */
+  --bg: #FBF8F3;
+  --bg-surface: #F3EDE4;
+  --bg-elevated: #EBE3D7;
+  --border: #DDD4C5;
+  --border-hover: #C6BAA8;
+  --text: #26201A;
+  --text-muted: #786C60;
+  --accent: #BD682C;
+  --accent-hover: #A35620;
+  --accent-amber: #D48B38;
+  --accent-olive: #5C754E;
+  --accent-rust: #B5432D;
+
+  --font-sans: "Inter", "Noto Sans Thai", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+[data-theme="dark"] {
+  /* Earth-Tone Dark Palette (Charred Espresso & Dark Cacao) */
+  --bg: #161311;
+  --bg-surface: #201C18;
+  --bg-elevated: #2A2520;
+  --border: #3B332B;
+  --border-hover: #54493E;
+  --text: #EFE8DC;
+  --text-muted: #9C9082;
+  --accent: #BD682C;
+  --accent-hover: #A35620;
+  --accent-amber: #D48B38;
+  --accent-olive: #6B8B5B;
+  --accent-rust: #C44C35;
+}
+
+/* ==========================================================================
+   GLOBAL RESET: Force 0px border radius across all DOM elements
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0px !important;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Classic Earth-Tone Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+::selection {
+  background: var(--accent);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   KEYFRAME ANIMATIONS
+   ========================================================================== */
+@keyframes archEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes archPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-arch-in {
+  animation: archEntrance 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY & UTILITIES
+   ========================================================================== */
+.font-mono {
+  font-family: var(--font-mono);
+}
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.text-accent { color: var(--accent); }
+.text-muted { color: var(--text-muted); }
+.text-amber { color: var(--accent-amber); }
+.text-olive { color: var(--accent-olive); }
+.text-rust { color: var(--accent-rust); }
+
+/* ==========================================================================
+   BUTTON SYSTEM (Rectilinear & Monospaced)
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+.btn:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-hover);
+}
+.btn:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.btn-primary {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+.btn-primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #FFFFFF;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent);
+}
+.btn-accent:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+.btn-outline:hover {
+  background: var(--bg-surface);
+  border-color: var(--border-hover);
+}
+
+.btn-danger {
+  background: var(--accent-rust);
+  color: #FFFFFF;
+  border-color: var(--accent-rust);
+}
+.btn-danger:hover {
+  background: #9E3924;
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-muted);
+}
+.btn-ghost:hover {
+  background: var(--bg-surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.btn-sm {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.7rem;
+}
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.85rem;
+}
+.btn-icon {
+  padding: 0.45rem;
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+/* ==========================================================================
+   NAVIGATION BAR
+   ========================================================================== */
+.top-nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--bg);
+  backdrop-filter: blur(8px);
+}
+.top-nav-inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text);
+  user-select: none;
+}
+.nav-monogram {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--text);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-weight: 900;
+  font-size: 1rem;
+  border: 1px solid var(--text);
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 2px;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  user-select: none;
+  border: 1px solid transparent;
+}
+.nav-link:hover {
+  color: var(--text);
+}
+.nav-link.active {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--border);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Navigation Top Progress Line */
+#nav-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 100;
+  pointer-events: none;
+  background: transparent;
+}
+#nav-progress-bar {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  transition: width 0.2s ease-out, opacity 0.25s ease;
+  box-shadow: 0 0 10px rgba(189, 104, 44, 0.8);
+}
+
+/* ==========================================================================
+   STARTUP BOOT LOADER
+   ========================================================================== */
+#startup-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.35s ease;
+  cursor: pointer;
+  user-select: none;
+}
+#startup-loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.loader-card {
+  position: relative;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  padding: 2.5rem 2rem;
+  max-width: 26rem;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+.corner-accent {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: var(--accent);
+  border-style: solid;
+}
+.corner-tl { top: 3px; left: 3px; border-width: 2px 0 0 2px; }
+.corner-tr { top: 3px; right: 3px; border-width: 2px 2px 0 0; }
+.corner-bl { bottom: 3px; left: 3px; border-width: 0 0 2px 2px; }
+.corner-br { bottom: 3px; right: 3px; border-width: 0 2px 2px 0; }
+
+.loader-monogram {
+  width: 4.5rem;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--text);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 2.25rem;
+  font-weight: 900;
+  border: 1px solid var(--text);
+}
+.loader-progress-track {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.loader-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  width: 15%;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   APP VIEWS CONTAINER
+   ========================================================================== */
+.main-content {
+  flex: 1;
+  max-width: 80rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+.view-panel {
+  display: none;
+  width: 100%;
+}
+.view-panel.active {
+  display: block;
+}
+
+/* ==========================================================================
+   PANEL BOXES & CARDS
+   ========================================================================== */
+.box {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  padding: 1.25rem;
+}
+.box-surface {
+  background: var(--bg-surface);
+}
+.box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   WORK MANAGEMENT (KANBAN & LIST)
+   ========================================================================== */
+.kanban-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .kanban-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.kanban-column {
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  display: flex;
+  flex-direction: column;
+  min-height: 28rem;
+}
+.kanban-col-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-elevated);
+}
+.kanban-cards-container {
+  padding: 0.75rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-y: auto;
+}
+.task-card {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  padding: 0.85rem;
+  cursor: grab;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.task-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.task-card.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+.kanban-cards-container.drag-over {
+  background: var(--bg-elevated);
+  border: 1px dashed var(--accent);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+}
+.badge-urgent {
+  background: rgba(181, 67, 45, 0.15);
+  color: var(--accent-rust);
+  border-color: var(--accent-rust);
+}
+.badge-high {
+  background: rgba(212, 139, 56, 0.15);
+  color: var(--accent-amber);
+  border-color: var(--accent-amber);
+}
+.badge-medium {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border-color: var(--border);
+}
+.badge-low {
+  background: transparent;
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+
+/* ==========================================================================
+   UNIVERSITY EXAM HUB (COUNTDOWN, POMODORO, SYLLABUS, NOTES)
+   ========================================================================== */
+.study-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 1024px) {
+  .study-grid {
+    grid-template-columns: 1.5fr 1fr;
+  }
+}
+
+.pomodoro-display {
+  font-family: var(--font-mono);
+  font-size: 3.5rem;
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: 0.05em;
+  padding: 1.25rem 0;
+  color: var(--text);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin: 1rem 0;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  margin-bottom: 0.5rem;
+  transition: all 0.15s ease;
+}
+.checklist-item:hover {
+  background: var(--bg-surface);
+}
+.checklist-item.done {
+  opacity: 0.65;
+  text-decoration: line-through;
+  background: var(--bg-elevated);
+}
+
+/* ==========================================================================
+   MODAL WINDOWS
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  max-width: 32rem;
+  width: 100%;
+  padding: 1.75rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  transform: translateY(10px);
+  transition: transform 0.2s ease;
+  position: relative;
+}
+.modal-overlay.open .modal-content {
+  transform: translateY(0);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  transition: border-color 0.15s ease;
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.app-footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-surface);
+  padding: 1.25rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
