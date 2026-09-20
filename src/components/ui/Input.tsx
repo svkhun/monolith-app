@@ -10,11 +10,11 @@ export interface InputProps
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, type = "text", label, error, id, ...props }, ref) => {
     return (
-      <div className="w-full space-y-1">
+      <div className="w-full space-y-1.5">
         {label && (
           <label
             htmlFor={id}
-            className="block font-mono text-[11px] uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-semibold"
+            className="block font-mono text-xs uppercase tracking-wider text-neutral-700 dark:text-neutral-300 font-semibold"
           >
             {label}
           </label>
@@ -24,14 +24,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           id={id}
           ref={ref}
           className={cn(
-            "flex h-9 w-full rounded-none border border-neutral-300 bg-white px-3 py-1 text-xs text-neutral-900 placeholder:text-neutral-400 transition-colors focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 dark:border-[#262626] dark:bg-[#141414] dark:text-neutral-100 dark:placeholder:text-neutral-600 dark:focus:border-neutral-100 dark:focus:ring-neutral-100 disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-10 w-full rounded-none border border-neutral-300 bg-white px-3.5 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 transition-colors focus:outline-none focus:border-neutral-900 focus:ring-1 focus:ring-neutral-900 dark:border-[#2b2b2b] dark:bg-[#141414] dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-neutral-100 dark:focus:ring-neutral-100 disabled:cursor-not-allowed disabled:opacity-50",
             error && "border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-700",
             className
           )}
           {...props}
         />
         {error && (
-          <p className="font-mono text-[11px] text-red-500 dark:text-red-400">{error}</p>
+          <p className="font-mono text-xs text-red-600 dark:text-red-400">{error}</p>
         )}
       </div>
     );

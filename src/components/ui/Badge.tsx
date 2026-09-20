@@ -18,8 +18,8 @@ export const Badge: React.FC<BadgeProps> = ({
     "inline-flex items-center font-mono font-semibold uppercase tracking-wider rounded-none select-none border";
 
   const sizes = {
-    sm: "px-1.5 py-0.5 text-[10px]",
-    md: "px-2 py-1 text-xs",
+    sm: "px-2 py-0.5 text-xs",
+    md: "px-2.5 py-1 text-xs",
   };
 
   const variants = {
@@ -77,7 +77,7 @@ export const StatusBadge: React.FC<{ status: TaskStatus; className?: string }> =
   const map: Record<TaskStatus, { variant: BadgeProps["variant"]; label: string }> = {
     TODO: { variant: "todo", label: "TO DO" },
     IN_PROGRESS: { variant: "in_progress", label: "IN PROGRESS" },
-    DONE: { variant: "done", label: "COMPLETED" },
+    DONE: { variant: "done", label: "DONE" },
   };
   return (
     <Badge variant={map[status].variant} className={className}>
