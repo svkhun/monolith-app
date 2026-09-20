@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Briefcase, GraduationCap, PlayCircle, LogOut } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { ThemeToggle } from "./ThemeToggle";
+import { NotificationCenter } from "./NotificationCenter";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
@@ -82,8 +83,9 @@ export const Navbar: React.FC = () => {
           </nav>
         </div>
 
-        {/* Right Controls: Theme Toggle & Session */}
-        <div className="flex items-center space-x-3">
+        {/* Right Controls: Notification Envelope, Theme Toggle & Session */}
+        <div className="flex items-center space-x-2.5">
+          <NotificationCenter />
           <ThemeToggle />
 
           {session?.user ? (

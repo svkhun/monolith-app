@@ -8,6 +8,7 @@ import { SyllabusTracker } from "@/components/study/SyllabusTracker";
 import { PomodoroTimer } from "@/components/study/PomodoroTimer";
 import { QuickNotesBoard } from "@/components/study/QuickNotesBoard";
 import { SubjectModal } from "@/components/study/SubjectModal";
+import { NotificationBanner } from "@/components/layout/NotificationBanner";
 import {
   getExamSubjects,
   createExamSubject,
@@ -242,103 +243,81 @@ export default function StudyPage() {
         </div>
       </div>
 
-      {subjects.length === 0 && !loading ? (
-        /* Clean Inviting Empty State */
-        <div className="border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#141414] p-12 text-center max-w-2xl mx-auto space-y-6">
-          <div className="inline-flex p-4 border border-neutral-300 dark:border-[#333333] bg-neutral-50 dark:bg-[#181818]">
-            <GraduationCap className="w-8 h-8 text-neutral-800 dark:text-neutral-200" />
-          </div>
-          <div className="space-y-2">
-            <h2 className="font-mono text-xl font-bold uppercase tracking-wide text-neutral-900 dark:text-white">
-              NO SCHEDULED EXAMS
-            </h2>
-            <p className="font-mono text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-md mx-auto">
-              You haven't scheduled any course examinations yet. Register your upcoming subjects or view the interactive tutorial sandbox.
+      {/* Slim, Non-Intrusive Notification Banner if no exams */}
+      {subjects.length === 0 && !loading && (
+        <NotificationBanner
+          storageKey="study_empty_banner"
+          message="Notice: No upcoming exams registered yet. Start by scheduling your first course."
+          actionText="+ REGISTER EXAM"
+          onActionClick={() => setIsSubjectModalOpen(true)}
+          secondaryText="EXPLORE DEMO"
+          secondaryHref="/demo"
+        />
+      )}
+
+      {/* 1. Exam Countdown Schedule Cards */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-500">
+            ACTIVE EXAM SCHEDULE // CHRONOLOGICAL ORDER
+          </h2>
+          <span className="font-mono text-xs text-neutral-500">
+            {sortedSubjects.length} REGISTERED COURSES
+          </span>
+        </div>
+
+        {sortedSubjects.length === 0 ? (
+          <div className="border border-dashed border-neutral-300 dark:border-[#262626] p-6 text-center bg-neutral-50/50 dark:bg-[#121212]/50">
+            <p className="font-mono text-xs text-neutral-500 uppercase tracking-wider">
+              NO EXAMS SCHEDULED YET. CLICK "+ REGISTER EXAM" TO START YOUR FIRST COUNTDOWN.
             </p>
           </div>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-3 pt-2">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => setIsSubjectModalOpen(true)}
-              className="flex items-center justify-center gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              <span>REGISTER FIRST EXAM</span>
-            </Button>
-            <Link href="/demo">
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full flex items-center justify-center gap-2"
-              >
-                <PlayCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>EXPLORE DEMO & TUTORIAL</span>
-              </Button>
-            </Link>
-          </div>
-        </div>
-      ) : (
-        /* Active Study Hub Views */
-        <div className="space-y-6">
-          {/* Exam Countdown Cards */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-500">
-                ACTIVE EXAM SCHEDULE // CHRONOLOGICAL ORDER
-              </h2>
-              <span className="font-mono text-xs text-neutral-500">
-                {sortedSubjects.length} REGISTERED COURSES
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {sortedSubjects.map((subject) => (
-                <ExamCountdownCard
-                  key={subject.id}
-                  subject={subject}
-                  isSelected={selectedSubject?.id === subject.id}
-                  onSelect={(sub) => setSelectedSubjectId(sub.id)}
-                  onDelete={handleDeleteSubject}
-                  onAddChapter={(subId) => setSelectedSubjectId(subId)}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Syllabus Tracker & Pomodoro Focus Timer */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-7">
-              <SyllabusTracker
-                subject={selectedSubject}
-                onToggleChapter={handleToggleChapter}
-                onAddChapter={handleAddChapter}
-                onDeleteChapter={handleDeleteChapter}
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {sortedSubjects.map((subject) => (
+              <ExamCountdownCard
+                key={subject.id}
+                subject={subject}
+                isSelected={selectedSubject?.id === subject.id}
+                onSelect={(sub) => setSelectedSubjectId(sub.id)}
+                onDelete={handleDeleteSubject}
+                onAddChapter={(subId) => setSelectedSubjectId(subId)}
               />
-            </div>
-            <div className="lg:col-span-5">
-              <PomodoroTimer
-                subjects={subjects}
-                selectedSubjectId={selectedSubject?.id}
-                onSubjectChange={(id) => setSelectedSubjectId(id)}
-              />
-            </div>
+            ))}
           </div>
+        )}
+      </div>
 
-          {/* Quick Notes / Formulas */}
-          <div>
-            <QuickNotesBoard
-              notes={allNotes}
-              subjects={subjects}
-              selectedSubjectId={selectedSubject?.id}
-              onAddNote={handleAddNote}
-              onTogglePin={handleTogglePinNote}
-              onDeleteNote={handleDeleteNote}
-            />
-          </div>
+      {/* 2. Syllabus Tracker & Pomodoro Focus Timer (Always Accessible) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-7">
+          <SyllabusTracker
+            subject={selectedSubject}
+            onToggleChapter={handleToggleChapter}
+            onAddChapter={handleAddChapter}
+            onDeleteChapter={handleDeleteChapter}
+          />
         </div>
-      )}
+        <div className="lg:col-span-5">
+          <PomodoroTimer
+            subjects={subjects}
+            selectedSubjectId={selectedSubject?.id}
+            onSubjectChange={(id) => setSelectedSubjectId(id)}
+          />
+        </div>
+      </div>
+
+      {/* 3. Quick Notes / Formulas (Always Accessible) */}
+      <div>
+        <QuickNotesBoard
+          notes={allNotes}
+          subjects={subjects}
+          selectedSubjectId={selectedSubject?.id}
+          onAddNote={handleAddNote}
+          onTogglePin={handleTogglePinNote}
+          onDeleteNote={handleDeleteNote}
+        />
+      </div>
 
       {/* Subject Registration Modal */}
       <SubjectModal

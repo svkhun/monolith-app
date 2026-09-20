@@ -7,6 +7,7 @@ import { TaskKanban } from "@/components/work/TaskKanban";
 import { TaskListView } from "@/components/work/TaskListView";
 import { TaskFilters } from "@/components/work/TaskFilters";
 import { TaskModal } from "@/components/work/TaskModal";
+import { NotificationBanner } from "@/components/layout/NotificationBanner";
 import {
   getTasks,
   createTask,
@@ -178,108 +179,92 @@ export default function WorkPage() {
             </p>
           </div>
 
-          {tasks.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono">
-              <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-3 py-1.5">
-                <span className="text-xs text-neutral-500 block">TOTAL WORK</span>
-                <span className="text-base font-bold text-neutral-900 dark:text-neutral-100">
-                  {metrics.total}
-                </span>
+          <div className="flex items-center gap-3">
+            {tasks.length > 0 && (
+              <div className="hidden sm:grid grid-cols-4 gap-2 font-mono">
+                <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-2.5 py-1">
+                  <span className="text-[10px] text-neutral-500 block">TOTAL</span>
+                  <span className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
+                    {metrics.total}
+                  </span>
+                </div>
+                <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-2.5 py-1">
+                  <span className="text-[10px] text-neutral-500 block">ACTIVE</span>
+                  <span className="text-sm font-bold text-sky-600 dark:text-sky-400">
+                    {metrics.inProgress}
+                  </span>
+                </div>
+                <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-2.5 py-1">
+                  <span className="text-[10px] text-neutral-500 block">TODAY</span>
+                  <span className="text-sm font-bold text-amber-600 dark:text-amber-400">
+                    {metrics.dueToday}
+                  </span>
+                </div>
+                <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-2.5 py-1">
+                  <span className="text-[10px] text-neutral-500 block">OVERDUE</span>
+                  <span className="text-sm font-bold text-red-600 dark:text-red-400">
+                    {metrics.overdue}
+                  </span>
+                </div>
               </div>
-              <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-3 py-1.5">
-                <span className="text-xs text-neutral-500 block">IN PROGRESS</span>
-                <span className="text-base font-bold text-sky-600 dark:text-sky-400">
-                  {metrics.inProgress}
-                </span>
-              </div>
-              <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-3 py-1.5">
-                <span className="text-xs text-neutral-500 block">DUE TODAY</span>
-                <span className="text-base font-bold text-amber-600 dark:text-amber-400">
-                  {metrics.dueToday}
-                </span>
-              </div>
-              <div className="border border-neutral-300 dark:border-[#262626] bg-neutral-50 dark:bg-[#0E0E0E] px-3 py-1.5">
-                <span className="text-xs text-neutral-500 block">OVERDUE</span>
-                <span className="text-base font-bold text-red-600 dark:text-red-400">
-                  {metrics.overdue}
-                </span>
-              </div>
-            </div>
-          )}
+            )}
+            <Button
+              variant="primary"
+              size="md"
+              onClick={() => handleOpenNewModal("TODO")}
+              className="flex items-center space-x-2"
+            >
+              <Plus className="w-4 h-4" />
+              <span>NEW TASK</span>
+            </Button>
+          </div>
         </div>
       </div>
 
-      {tasks.length === 0 && !loading ? (
-        /* Clean Inviting Empty State */
-        <div className="border border-neutral-300 dark:border-[#262626] bg-white dark:bg-[#141414] p-12 text-center max-w-2xl mx-auto space-y-6">
-          <div className="inline-flex p-4 border border-neutral-300 dark:border-[#333333] bg-neutral-50 dark:bg-[#181818]">
-            <Briefcase className="w-8 h-8 text-neutral-800 dark:text-neutral-200" />
-          </div>
-          <div className="space-y-2">
-            <h2 className="font-mono text-xl font-bold uppercase tracking-wide text-neutral-900 dark:text-white">
-              YOUR WORKSPACE IS CLEAN
-            </h2>
-            <p className="font-mono text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-md mx-auto">
-              No tasks currently registered in your personal workspace. Dispatch your first engineering item or explore the tutorial sandbox.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-3 pt-2">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={() => handleOpenNewModal("TODO")}
-              className="flex items-center justify-center gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              <span>CREATE FIRST TASK</span>
-            </Button>
-            <Link href="/demo">
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full flex items-center justify-center gap-2"
-              >
-                <PlayCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>EXPLORE DEMO & TUTORIAL</span>
-              </Button>
-            </Link>
-          </div>
-        </div>
-      ) : (
-        /* Workspace Active View */
-        <div className="space-y-6">
-          <TaskFilters
-            search={search}
-            onSearchChange={setSearch}
-            selectedPriority={selectedPriority}
-            onPriorityChange={setSelectedPriority}
-            selectedTag={selectedTag}
-            onTagChange={setSelectedTag}
-            allTags={allTags}
-            viewMode={viewMode}
-            onViewModeChange={setViewMode}
-            onOpenNewModal={() => handleOpenNewModal("TODO")}
-          />
-
-          {viewMode === "KANBAN" ? (
-            <TaskKanban
-              tasks={filteredTasks}
-              onEdit={handleOpenEditModal}
-              onDelete={handleDeleteTask}
-              onStatusChange={handleStatusChange}
-              onAddNew={handleOpenNewModal}
-            />
-          ) : (
-            <TaskListView
-              tasks={filteredTasks}
-              onEdit={handleOpenEditModal}
-              onDelete={handleDeleteTask}
-              onStatusChange={handleStatusChange}
-            />
-          )}
-        </div>
+      {/* Slim, Non-Intrusive Notification Banner if no tasks */}
+      {tasks.length === 0 && !loading && (
+        <NotificationBanner
+          storageKey="work_empty_banner"
+          message="Notice: Workspace ready. You currently have 0 tasks in this session."
+          actionText="+ CREATE TASK"
+          onActionClick={() => handleOpenNewModal("TODO")}
+          secondaryText="EXPLORE DEMO"
+          secondaryHref="/demo"
+        />
       )}
+
+      {/* Workspace Active View (Always Accessible) */}
+      <div className="space-y-6">
+        <TaskFilters
+          search={search}
+          onSearchChange={setSearch}
+          selectedPriority={selectedPriority}
+          onPriorityChange={setSelectedPriority}
+          selectedTag={selectedTag}
+          onTagChange={setSelectedTag}
+          allTags={allTags}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          onOpenNewModal={() => handleOpenNewModal("TODO")}
+        />
+
+        {viewMode === "KANBAN" ? (
+          <TaskKanban
+            tasks={filteredTasks}
+            onEdit={handleOpenEditModal}
+            onDelete={handleDeleteTask}
+            onStatusChange={handleStatusChange}
+            onAddNew={handleOpenNewModal}
+          />
+        ) : (
+          <TaskListView
+            tasks={filteredTasks}
+            onEdit={handleOpenEditModal}
+            onDelete={handleDeleteTask}
+            onStatusChange={handleStatusChange}
+          />
+        )}
+      </div>
 
       {/* Create / Edit Modal */}
       <TaskModal
